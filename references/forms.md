@@ -1,0 +1,146 @@
+# Forms
+
+Use this for login, signup, checkout, settings, profile editing, search filters, creation flows, payment, and any mobile input-heavy screen.
+
+## Form Principles
+
+- Group fields by user mental model, not database schema.
+- Keep labels visible; placeholders are examples, not labels.
+- Validate early enough to help, late enough to avoid scolding.
+- Preserve user input on error, retry, navigation, and app backgrounding when possible.
+- Make the submit state explicit: available, disabled, loading, success, error.
+- Design for keyboard, autofill, password managers, and large text from the start.
+
+## Anatomy
+
+Recommended field block:
+
+```tsx
+<View style={styles.field}>
+  <Text style={styles.label}>Email</Text>
+  <TextInput
+    value={email}
+    onChangeText={setEmail}
+    keyboardType="email-address"
+    autoCapitalize="none"
+    autoComplete="email"
+    textContentType="emailAddress"
+    returnKeyType="next"
+    accessibilityLabel="Email"
+    accessibilityHint="Enter the email address for your account"
+    style={[styles.input, emailError && styles.inputError]}
+  />
+  {emailError ? (
+    <Text accessibilityLiveRegion="polite" style={styles.error}>
+      {emailError}
+    </Text>
+  ) : (
+    <Text style={styles.helper}>Use the email where you receive receipts.</Text>
+  )}
+</View>
+```
+
+## Input Prop Defaults
+
+| Field | Key props |
+| --- | --- |
+| Email | `keyboardType="email-address"`, `autoCapitalize="none"`, `autoComplete="email"`, `textContentType="emailAddress"` |
+| Password | `secureTextEntry`, `autoComplete="password"` or `"new-password"`, `textContentType="password"` or `"newPassword"` |
+| Phone | `keyboardType="phone-pad"`, `autoComplete="tel"`, region-aware formatting |
+| Number | `keyboardType="number-pad"` or `"decimal-pad"`, validate locale/decimal rules |
+| Name | `autoComplete="name"`, avoid disabling autocorrect unnecessarily |
+| Address | platform autofill fields, multiline only where useful |
+| Search | `returnKeyType="search"`, clear button, recent/empty state |
+| One-time code | `keyboardType="number-pad"`, `textContentType="oneTimeCode"`, paste support |
+
+Always check current React Native and platform docs when using newly added autofill values.
+
+## Focus Flow
+
+- `returnKeyType="next"` moves to the next field.
+- Final field uses `returnKeyType="done"`, `"go"`, `"send"`, or `"search"` based on task.
+- Move focus programmatically only when it helps.
+- Scroll the focused input above the keyboard.
+- Do not hide the submit button behind the keyboard unless the keyboard submit path is clear.
+
+## Validation
+
+Use three layers:
+
+1. Formatting constraints while typing only when they prevent impossible input.
+2. Inline validation on blur or after first submit attempt.
+3. Server validation after submit with field-specific messages where possible.
+
+Avoid:
+
+- Red errors before the user has had a chance to finish.
+- Clearing fields after a failed submit.
+- Generic `Something went wrong` when a field can be identified.
+- Disabled submit with no explanation.
+
+## Submit Button
+
+Submit state must communicate:
+
+```tsx
+<Pressable
+  accessibilityRole="button"
+  accessibilityState={{ disabled: !canSubmit || isSubmitting, busy: isSubmitting }}
+  disabled={!canSubmit || isSubmitting}
+  onPress={submit}
+  style={({ pressed }) => [
+    styles.submit,
+    pressed && canSubmit && styles.submitPressed,
+    !canSubmit && styles.submitDisabled,
+  ]}
+>
+  <Text style={styles.submitLabel}>
+    {isSubmitting ? 'Saving' : 'Save changes'}
+  </Text>
+</Pressable>
+```
+
+Rules:
+
+- Use task-specific labels: `Pay $42.18`, `Create account`, `Save address`.
+- Show progress for async submit.
+- Prevent duplicate submit.
+- On success, either navigate with continuity or show a short confirmation.
+- On failure, preserve data and offer retry.
+
+## Checkout Forms
+
+Checkout needs extra trust and recovery:
+
+- Show total cost and what changes it.
+- Make shipping, payment, promo, and contact info editable.
+- Use native payment sheets when available and appropriate.
+- Keep destructive or irreversible actions explicit.
+- Show processing state that prevents double payment.
+- Preserve cart and entered fields after payment errors.
+
+## Auth Forms
+
+- Support password managers and autofill.
+- Do not block paste into password or one-time-code fields.
+- Avoid revealing whether an email exists unless product/security policy allows it.
+- Rate-limit and error-copy should be calm and specific enough to recover.
+- Use secure storage only after successful auth.
+
+## Search and Filter Forms
+
+- Search should show recent, suggested, empty, loading, and no-results states.
+- Filters need clear applied state and reset.
+- Avoid hiding active filters behind a collapsed sheet without a visible count.
+- Submit-on-change is good for small local filters; explicit apply is better for expensive remote filters.
+
+## Form QA
+
+- Keyboard does not cover focused field or primary action.
+- Return key flow works.
+- Autofill/password manager works.
+- Large text does not clip labels/errors.
+- VoiceOver/TalkBack reads label, value, error, and state.
+- Offline/server error preserves input.
+- Submit cannot be triggered twice accidentally.
+- Sensitive values are handled securely.
