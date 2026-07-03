@@ -66,7 +66,7 @@ Turn the design read into concrete choices. Use this as a starting table, then a
 | Fintech, professional, iOS | SF Pro, strong numeric hierarchy | cool neutrals, restrained accent, clear status colors | soft 12-16 | low, structural | SF Symbols | lists, summaries, explicit confirmations |
 | Health/wellness, consumer | system or friendly rounded sans | warm neutrals, sage/blue/soft accent | soft/round 16-24 | gentle | rounded platform icons | guided cards, supportive empty/error states |
 | Fitness, outdoor | bold system/custom sans, large metrics | high contrast, dark/light outdoor-safe accent | medium 12-20 | snappy | bold simple icons | large controls, bottom actions, glanceable stats |
-| Social/community | expressive but readable | warmer palette, identity colors with restraint | round 20+ | reactive | custom/Phosphor/SF/Material by platform | avatar/content-led feed, visible privacy states |
+| Social/community | expressive but readable | warmer palette, identity colors with restraint | round 20+ | reactive | custom or platform icon set (SF/Material) | avatar/content-led feed, visible privacy states |
 | Commerce/luxury | editorial display plus readable body | monochrome or rich brand accent | soft 12-20 | smooth | minimal line icons | image-led detail, strong checkout path |
 | Productivity/tool | system sans, compact hierarchy | neutral roles, functional accent | sharp/soft 4-12 | minimal | platform or utilitarian icons | dense lists, toolbars, separators over cards |
 | Media/entertainment | content-led type, bold titles | dark/media-first, scrims | medium | cinematic but restrained | platform/media icons | full-bleed media, playback controls, carousels only when useful |
@@ -101,6 +101,8 @@ Prefer conventional patterns for risky or familiar flows: back behavior, forms, 
 Make copy name outcomes: `Pay $42.18`, `Save draft`, `Retry upload`, `Use current location`, `Delete workout`.
 
 ## Dials
+
+This section is the canonical definition of the design dials. `SKILL.md` and `references/motion-haptics.md` carry short summaries that mirror it; edit the semantics here and keep those in sync.
 
 Set dials after the design read:
 

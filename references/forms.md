@@ -16,6 +16,8 @@ Use this for login, signup, checkout, settings, profile editing, search filters,
 Recommended field block:
 
 ```tsx
+// passwordRef points at the next field. returnKeyType only relabels the
+// return key; onSubmitEditing is what actually advances focus.
 <View style={styles.field}>
   <Text style={styles.label}>Email</Text>
   <TextInput
@@ -26,11 +28,14 @@ Recommended field block:
     autoComplete="email"
     textContentType="emailAddress"
     returnKeyType="next"
+    submitBehavior="submit"
+    onSubmitEditing={() => passwordRef.current?.focus()}
     accessibilityLabel="Email"
     accessibilityHint="Enter the email address for your account"
     style={[styles.input, emailError && styles.inputError]}
   />
   {emailError ? (
+    // Live region covers Android. announceForAccessibility (below) covers iOS.
     <Text accessibilityLiveRegion="polite" style={styles.error}>
       {emailError}
     </Text>
@@ -38,6 +43,18 @@ Recommended field block:
     <Text style={styles.helper}>Use the email where you receive receipts.</Text>
   )}
 </View>
+```
+
+On iOS, `accessibilityLiveRegion` is a no-op, so announce validation results explicitly when they arrive:
+
+```tsx
+import { AccessibilityInfo, Platform } from 'react-native';
+
+useEffect(() => {
+  if (emailError && Platform.OS === 'ios') {
+    AccessibilityInfo.announceForAccessibility(emailError);
+  }
+}, [emailError]);
 ```
 
 ## Input Prop Defaults
@@ -51,13 +68,13 @@ Recommended field block:
 | Name | `autoComplete="name"`, avoid disabling autocorrect unnecessarily |
 | Address | platform autofill fields, multiline only where useful |
 | Search | `returnKeyType="search"`, clear button, recent/empty state |
-| One-time code | `keyboardType="number-pad"`, `textContentType="oneTimeCode"`, paste support |
+| One-time code | `keyboardType="number-pad"`, `textContentType="oneTimeCode"` (iOS), `autoComplete="sms-otp"` (Android), paste support |
 
 Always check current React Native and platform docs when using newly added autofill values.
 
 ## Focus Flow
 
-- `returnKeyType="next"` moves to the next field.
+- `returnKeyType="next"` only relabels the return key. Advance focus with `onSubmitEditing={() => nextRef.current?.focus()}` plus `submitBehavior="submit"` (older RN: `blurOnSubmit={false}`).
 - Final field uses `returnKeyType="done"`, `"go"`, `"send"`, or `"search"` based on task.
 - Move focus programmatically only when it helps.
 - Scroll the focused input above the keyboard.
@@ -137,7 +154,7 @@ Checkout needs extra trust and recovery:
 ## Form QA
 
 - Keyboard does not cover focused field or primary action.
-- Return key flow works.
+- Return key flow works: verify on device/simulator that the next-field key advances focus (not just that `returnKeyType` is set).
 - Autofill/password manager works.
 - Large text does not clip labels/errors.
 - VoiceOver/TalkBack reads label, value, error, and state.

@@ -17,6 +17,8 @@ If an animation cannot be explained through the user or system state, remove it.
 
 ## Intensity
 
+This table mirrors the canonical `MOTION_INTENSITY` definition in `references/design-process.md`; keep the two in sync.
+
 | `MOTION_INTENSITY` | Behavior |
 | --- | --- |
 | 1-3 | Native transitions, press states, minimal fades |

@@ -25,11 +25,14 @@ Material guidance changes over time, especially around expressive components, mo
 Compose:
 
 ```kotlin
+// clickable supplies the Button role and the activation action; declaring
+// role = Role.Button without a click action announces a button TalkBack
+// cannot activate. Prefer IconButton for standard cases.
 Box(
   modifier = Modifier
     .minimumInteractiveComponentSize()
+    .clickable(onClick = onOpenMenu)
     .semantics {
-      role = Role.Button
       contentDescription = "Open menu"
     }
 )

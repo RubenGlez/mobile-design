@@ -34,10 +34,12 @@ export const type = StyleSheet.create({
   title: {
     fontSize: 28,
     lineHeight: 34,
-    fontWeight: '700',
+    // On Android, weight lives in the family name; pairing `sans-serif-medium`
+    // with fontWeight '700' makes the family choice dead config and synthesizes
+    // bold. Pick one axis: `sans-serif` + '700', or `sans-serif-medium` + '500'.
     ...Platform.select({
-      ios: { fontFamily: 'System' },
-      android: { fontFamily: 'sans-serif-medium' },
+      ios: { fontFamily: 'System', fontWeight: '700' },
+      android: { fontFamily: 'sans-serif', fontWeight: '700' },
     }),
   },
   body: {
@@ -68,6 +70,8 @@ Use `maxFontSizeMultiplier` only when a control would otherwise break beyond rep
 | Editorial | One expressive display face plus readable system/body face | Serif body text is risky on small screens |
 | Playful | Rounded sans, friendly weights | Do not sacrifice legibility |
 | Technical | System sans plus mono for data/code | Mono body text becomes tiring |
+
+These are direction examples, not free-to-use assets. Several (for example Neue Montreal, GT America, Satoshi) are commercial or license-restricted; verify licensing before bundling any font with `expo-font`.
 
 ## Font Loading
 

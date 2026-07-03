@@ -4,11 +4,14 @@ Use this for iOS-specific interaction, visual conventions, HIG alignment, SF Sym
 
 ## HIG Principles
 
-Use Apple's core principles as practical checks:
+Use these as practical checks. Apple's current HIG foundations emphasize hierarchy, harmony, and consistency, expressed through the Liquid Glass material system introduced in the 2025 redesign (iOS 26). The older Clarity / Deference / Depth trio is still a useful heuristic lens but is no longer Apple's stated framing.
 
-- Clarity: text, icons, hierarchy, and controls are understandable.
-- Deference: UI supports content instead of competing with it.
-- Depth: layers communicate navigation, modality, and focus.
+- Hierarchy: text, icons, and controls make the important thing obvious first.
+- Harmony: layout, materials, and motion align with the platform rather than fighting it.
+- Consistency: controls, gestures, and terminology match system expectations.
+- Clarity / Deference / Depth (legacy heuristics): keep content readable, let UI support content, and use layering to communicate navigation and focus.
+
+Verify the current HIG framing and any material/version-specific names against Apple's docs before citing them in a review.
 
 ## Typography
 
@@ -66,6 +69,7 @@ Rules:
 - Prefer semantic system colors for native iOS UI.
 - Use adaptive asset catalog colors for brand tokens in native code.
 - Blur is appropriate for transient or layered surfaces, not generic repeated cards.
+- On iOS 26+, prefer the system Liquid Glass materials for floating and layered surfaces over hand-rolled blur so the treatment stays consistent with the platform; check current SDK/RN support before relying on it.
 - Test Increase Contrast and dark mode.
 
 ## Apple Ecosystem Surfaces
