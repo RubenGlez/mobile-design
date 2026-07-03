@@ -10,16 +10,18 @@ Minimum interactive hit areas:
 - Android: 48dp by 48dp.
 - Leave enough spacing between adjacent actions, especially destructive and primary actions.
 
-The visible icon may be 20-24pt; the hit area still needs to meet the minimum through padding, layout, or `hitSlop`.
+The visible icon may be 20-24pt; the hit area still needs to meet the minimum through padding, layout, or `hitSlop`. Size the expanded area against the larger 48dp Android minimum, not just 44pt iOS. With a 24pt icon, 12 per edge reaches 48; smaller icons need more.
 
 ```tsx
 <Pressable
   accessibilityRole="button"
   accessibilityLabel="Delete item"
-  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+  // 24pt icon + 12 per edge = 48x48, meets both iOS (44) and Android (48).
+  hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+  style={{ minWidth: 48, minHeight: 48, alignItems: 'center', justifyContent: 'center' }}
   onPress={onDelete}
 >
-  <TrashIcon />
+  <TrashIcon width={24} height={24} />
 </Pressable>
 ```
 
@@ -87,14 +89,22 @@ Decorative icons and images should be hidden from accessibility APIs.
 
 - When a modal opens, move focus into it.
 - When it closes, return focus to the trigger.
-- Announce async success/error results.
+- Announce async success/error results. Use `accessibilityLiveRegion` for Android and `AccessibilityInfo.announceForAccessibility` for iOS; neither alone covers both platforms.
 - Put validation messages near the fields they describe.
 - Use logical reading order: top to bottom, leading to trailing.
 
 React Native examples:
 
 ```tsx
-<Text accessibilityLiveRegion="polite">{statusMessage}</Text>
+// accessibilityLiveRegion is Android-only. On iOS, VoiceOver needs an
+// explicit announcement when the message changes.
+<Text accessibilityLiveRegion="polite">{statusMessage}</Text>;
+
+useEffect(() => {
+  if (statusMessage && Platform.OS === 'ios') {
+    AccessibilityInfo.announceForAccessibility(statusMessage);
+  }
+}, [statusMessage]);
 
 <Pressable
   accessibilityState={{ disabled: isSubmitting, busy: isSubmitting }}

@@ -1,7 +1,5 @@
 # Mobile Design
 
-[![skills.sh](https://skills.sh/b/RubenGlez/mobile-design)](https://skills.sh/RubenGlez/mobile-design)
-
 Mobile Design is an agent skill for designing, implementing, and reviewing professional mobile UI for React Native, Expo, iOS, and Android apps.
 
 It gives coding agents a mobile-product design process with platform-aware guidance for navigation, forms, typography, color, accessibility, touch targets, gestures, haptics, motion, safe areas, and React Native implementation details.
@@ -51,6 +49,8 @@ references/
 ```
 
 `SKILL.md` contains the trigger metadata and operating loop. The `references/` files are loaded selectively by the agent based on the mobile task.
+
+`SKILL.md` lives at the repo root, so `npx skills add` copies the whole repository (this README, `LICENSE`, `AGENTS.md`, `CLAUDE.md`, and `references/`) into the consumer's skill folder, not just the skill bundle. This is intentional; only add new files to the repo root if you are comfortable shipping them to every installer.
 
 ## Best Use Cases
 

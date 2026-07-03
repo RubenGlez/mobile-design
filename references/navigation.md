@@ -76,7 +76,7 @@ const linking = {
 };
 ```
 
-For React Navigation static configuration, route-level linking can live in screen config and `createStaticNavigation` accepts linking prefixes. Check current docs before implementing.
+For React Navigation static configuration, `createStaticNavigation(RootStack)` returns a component; linking prefixes are passed to that component's `linking` prop (`<Navigation linking={{ prefixes, config }} />`), and route-level paths live in each screen's `linking` options. `createStaticNavigation` itself takes no linking argument. Check current docs before implementing.
 
 ## Expo Router
 

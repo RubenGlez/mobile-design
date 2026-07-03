@@ -1,6 +1,9 @@
 ---
 name: mobile-design
 description: Designs, implements, and reviews professional mobile UI for React Native, Expo, iOS, and Android apps. Use when the task involves mobile screens, components, navigation, visual direction, design systems, accessibility, gestures, haptics, animations, typography, color, dark mode, safe areas, platform conventions, App Store or Play-quality polish, iOS HIG, Material Design, Expo Router, React Navigation, Reanimated, Gesture Handler, or mobile UX critique.
+license: MIT
+metadata:
+  version: 0.1.0
 ---
 
 # Mobile Design
@@ -35,9 +38,11 @@ Treat mobile platform and library details as unstable. Before giving version-spe
 
 Use `references/source-map.md` for canonical source links.
 
+If docs are unreachable (sandboxed or offline environment), do not silently skip this step or claim the advice was verified. State that current docs could not be reached and mark version-specific advice as unverified-against-current-docs in the Output Contract's "what could not be verified" line.
+
 ## Reference Routing
 
-Always start with `references/design-process.md`.
+For any design, review, or screen-level task, start with `references/design-process.md`. For a trivial mechanical tweak (for example a single padding or color-token change), skip straight to the relevant file.
 
 Then load only what the task needs:
 
@@ -58,6 +63,8 @@ Then load only what the task needs:
 | Source verification | `references/source-map.md` |
 
 ## Design Dials
+
+`references/design-process.md` is the canonical source for dial semantics (band meanings and translation tables). The summary below mirrors it; if they ever disagree, design-process.md wins.
 
 Set these after the design read and let them shape density, motion, and visual risk.
 
