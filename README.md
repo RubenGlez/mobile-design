@@ -4,7 +4,11 @@ Mobile Design is an agent skill for designing, implementing, and reviewing profe
 
 **Project page:** [rubenglez.dev/mobile-design](https://rubenglez.dev/mobile-design)
 
+**Interactive showcase:** [rubenglez.github.io/mobile-design-showcase](https://rubenglez.github.io/mobile-design-showcase/)
+
 It gives coding agents a mobile-product design process with platform-aware guidance for navigation, forms, typography, color, accessibility, touch targets, gestures, haptics, motion, safe areas, and React Native implementation details.
+
+The separate showcase repository contains four interactive fictional product cases, including offline location tracking, RTL checkout, fintech confirmation, and a design-audit before/after. It is intentionally kept outside this installed skill so visual assets and demo code do not add installation weight.
 
 ## Install
 
