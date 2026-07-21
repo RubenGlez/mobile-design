@@ -2,8 +2,6 @@
 
 Mobile Design is an agent skill for designing, implementing, and reviewing professional mobile UI for React Native, Expo, iOS, and Android apps.
 
-**Project page:** [rubenglez.dev/mobile-design](https://rubenglez.dev/mobile-design)
-
 **Interactive showcase:** [rubenglez.github.io/mobile-design-showcase](https://rubenglez.github.io/mobile-design-showcase/)
 
 It gives coding agents a mobile-product design process with platform-aware guidance for navigation, forms, typography, color, accessibility, touch targets, gestures, haptics, motion, safe areas, and React Native implementation details.
