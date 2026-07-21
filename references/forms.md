@@ -62,8 +62,8 @@ useEffect(() => {
 | Field | Key props |
 | --- | --- |
 | Email | `keyboardType="email-address"`, `autoCapitalize="none"`, `autoComplete="email"`, `textContentType="emailAddress"` |
-| Password | `secureTextEntry`, `autoComplete="password"` or `"new-password"`, `textContentType="password"` or `"newPassword"` |
-| Phone | `keyboardType="phone-pad"`, `autoComplete="tel"`, region-aware formatting |
+| Password | `secureTextEntry`, `autoComplete="current-password"` or `"new-password"`; pair iOS with `textContentType="password"` or `"newPassword"` |
+| Phone | `keyboardType="phone-pad"`, `autoComplete="tel"`, region-aware formatting; do not rely on Return to advance on iOS |
 | Number | `keyboardType="number-pad"` or `"decimal-pad"`, validate locale/decimal rules |
 | Name | `autoComplete="name"`, avoid disabling autocorrect unnecessarily |
 | Address | platform autofill fields, multiline only where useful |
@@ -76,6 +76,7 @@ Always check current React Native and platform docs when using newly added autof
 
 - `returnKeyType="next"` only relabels the return key. Advance focus with `onSubmitEditing={() => nextRef.current?.focus()}` plus `submitBehavior="submit"` (older RN: `blurOnSubmit={false}`).
 - Final field uses `returnKeyType="done"`, `"go"`, `"send"`, or `"search"` based on task.
+- On iOS, `keyboardType="phone-pad"` does not fire `onSubmitEditing`. Provide a visible next/continue action or an input accessory control when the user must advance.
 - Move focus programmatically only when it helps.
 - Scroll the focused input above the keyboard.
 - Do not hide the submit button behind the keyboard unless the keyboard submit path is clear.
@@ -100,15 +101,17 @@ Avoid:
 Submit state must communicate:
 
 ```tsx
+const isUnavailable = !canSubmit || isSubmitting;
+
 <Pressable
   accessibilityRole="button"
-  accessibilityState={{ disabled: !canSubmit || isSubmitting, busy: isSubmitting }}
-  disabled={!canSubmit || isSubmitting}
+  accessibilityState={{ disabled: isUnavailable, busy: isSubmitting }}
+  disabled={isUnavailable}
   onPress={submit}
   style={({ pressed }) => [
     styles.submit,
-    pressed && canSubmit && styles.submitPressed,
-    !canSubmit && styles.submitDisabled,
+    pressed && !isUnavailable && styles.submitPressed,
+    isUnavailable && styles.submitDisabled,
   ]}
 >
   <Text style={styles.submitLabel}>

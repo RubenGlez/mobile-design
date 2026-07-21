@@ -1,9 +1,9 @@
 ---
 name: mobile-design
-description: Designs, implements, and reviews professional mobile UI for React Native, Expo, iOS, and Android apps. Use when the task involves mobile screens, components, navigation, visual direction, design systems, accessibility, gestures, haptics, animations, typography, color, dark mode, safe areas, platform conventions, App Store or Play-quality polish, iOS HIG, Material Design, Expo Router, React Navigation, Reanimated, Gesture Handler, or mobile UX critique.
+description: Designs, implements, and reviews professional mobile UI for React Native and Expo, with platform-aware design and review guidance for iOS and Android. Use when the task involves mobile screens, components, navigation, visual direction, design systems, accessibility, gestures, haptics, animations, typography, color, dark mode, safe areas, adaptive windows, localization, platform conventions, App Store or Play-quality polish, iOS HIG, Material Design, Expo Router, React Navigation, Reanimated, Gesture Handler, or mobile UX critique.
 license: MIT
 metadata:
-  version: 0.1.0
+  version: 0.3.0
 ---
 
 # Mobile Design
@@ -15,9 +15,10 @@ Act as a senior mobile product designer and React Native engineer. The work shou
 1. Infer the brief before designing.
 2. State a one-line design read.
 3. Load only the relevant reference files.
-4. Check current local package versions and official docs before version-specific implementation advice.
-5. Build or review against platform, accessibility, performance, and state-completeness constraints.
-6. Verify the result when the repo and tools allow it.
+4. Run the feasibility preflight only when the feature has material platform, data, or runtime risk.
+5. Check current local package versions and official docs before version-specific implementation advice.
+6. Build or review against platform, accessibility, performance, and state-completeness constraints.
+7. Verify the result when the repo and tools allow it.
 
 ## Design Read
 
@@ -55,12 +56,20 @@ Then load only what the task needs:
 | Type scale, Dynamic Type, font loading, color tokens, contrast | `references/typography-color.md` |
 | Touch targets, gestures, haptics, screen readers, motor access | `references/accessibility-touch.md` |
 | Motion, Reanimated, gesture animation, loading transitions | `references/motion-haptics.md` |
+| Permissions, sensors, background work, offline sync, secure data, native modules, performance-sensitive features | `references/feasibility-risk.md` |
 | Navigation, deep links, tabs, stacks, drawers, modals | `references/navigation.md` |
+| Tablets, foldables, resized windows, external input, RTL, localization | `references/adaptivity-localization.md` |
 | iOS-specific conventions | `references/platform-ios.md` |
 | Android-specific conventions | `references/platform-android.md` |
 | React Native components, lists, images, architecture, state handling | `references/react-native-implementation.md` |
-| Final QA or design review | `references/review-checklists.md` |
+| Final QA or design review | `references/review-checklists.md`, `references/review-rules.md` |
 | Source verification | `references/source-map.md` |
+
+## Implementation Scope
+
+- Treat React Native and Expo as the default code implementation path. Inspect the installed project and current official docs before writing version-specific code.
+- For SwiftUI, UIKit, Jetpack Compose, or Views tasks, provide platform-specific design and review guidance. Write framework-specific implementation only after inspecting a native project and its toolchain.
+- State platform divergence deliberately. Do not present React Native props or Expo modules as SwiftUI or Compose APIs, and do not promise a capability without a supported runtime and fallback.
 
 ## Design Dials
 
@@ -86,6 +95,8 @@ These are not taste preferences:
 - Text must respect platform text scaling unless there is a narrow, justified exception.
 - Interactive elements need accessible names, roles, states, and logical focus order.
 - Gestures that perform important actions need visible alternatives.
+- Layout must adapt to the available window, orientation, and supported input methods; do not infer layout from device name alone.
+- Localized apps must support long strings, locale formatting, and RTL layout when their target languages require it.
 - Loading, empty, error, disabled, pressed, and success states are part of the design, not optional polish.
 - Auth tokens and secrets must not be stored in AsyncStorage; use secure storage appropriate to the platform.
 - Motion must respect Reduce Motion / animator-duration accessibility preferences where the stack exposes them.
@@ -112,6 +123,9 @@ For design or implementation tasks, include:
 - Screen structure or form flow decisions when relevant.
 - Component states covered.
 - Accessibility and motion considerations.
+- Adaptivity, localization, and input-method considerations when relevant.
+- Feasibility risks, fallback, and verification plan when a preflight was required.
+- Implementation target and intentional platform divergence when code is involved.
 - Five-second comprehension and obvious-affordance checks when reviewing UI.
 - Verification performed, or what could not be verified.
 

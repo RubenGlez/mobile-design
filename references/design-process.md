@@ -57,6 +57,23 @@ These are starting points, not rules.
 | Media / entertainment | Immersive, content-first | Heavy chrome, generic thumbnails, poor loading states |
 | Kids / education | Clear, forgiving, playful | Tiny controls, punitive errors, unbounded stimulation |
 
+## Trust, Emotion, and Recovery
+
+Choose an intended feeling only when it helps the user finish the task: confidence before a payment, control during a permission request, relief after recovery, or momentum when a setup step completes. Earn that feeling with clarity, feedback, and a visible next action, not celebration layered over uncertainty.
+
+For high-value moments, define the trigger, the observable state change, the feedback, and the recovery or next step.
+
+| Moment | Design for | Avoid |
+| --- | --- | --- |
+| Finance confirmation | Confidence and control | Ambiguous labels, hidden fees, celebratory motion before completion |
+| Health result or reminder | Reassurance and agency | Alarming color/copy without a clear action or escalation path |
+| Permission request | Informed consent | System prompt without prior value or a usable decline path |
+| Checkout failure | Recovery | Dead ends, lost cart data, blame-oriented copy |
+| Onboarding completion | Momentum | Blocking confetti or a vague success state with no next action |
+| Social safety/privacy action | Safety and ownership | Invisible audience, moderation, or undo state |
+
+Do not manufacture urgency, use variable rewards, or conceal meaningful consequences to create engagement. In risky or irreversible flows, lower visual variance and motion rather than trying to make the moment feel exciting.
+
 ## Design Read Cascade
 
 Turn the design read into concrete choices. Use this as a starting table, then adapt to the local app.

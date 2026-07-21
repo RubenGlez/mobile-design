@@ -34,9 +34,13 @@ Use the mobile-design skill to redesign this checkout screen for iOS and Android
 
 ```text
 SKILL.md
+evals/
+  cases.md
 references/
   accessibility-touch.md
+  adaptivity-localization.md
   design-process.md
+  feasibility-risk.md
   forms.md
   motion-haptics.md
   navigation.md
@@ -44,6 +48,7 @@ references/
   platform-ios.md
   react-native-implementation.md
   review-checklists.md
+  review-rules.md
   screen-patterns.md
   source-map.md
   typography-color.md
@@ -51,6 +56,8 @@ references/
 ```
 
 `SKILL.md` contains the trigger metadata and operating loop. The `references/` files are loaded selectively by the agent based on the mobile task.
+
+`evals/cases.md` is a maintainer-facing suite for forward-testing skill revisions before release.
 
 `SKILL.md` lives at the repo root, so `npx skills add` copies the whole repository (this README, `LICENSE`, `AGENTS.md`, `CLAUDE.md`, and `references/`) into the consumer's skill folder, not just the skill bundle. This is intentional; only add new files to the repo root if you are comfortable shipping them to every installer.
 

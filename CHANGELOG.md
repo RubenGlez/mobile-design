@@ -2,6 +2,22 @@
 
 All notable changes to the mobile-design skill are documented here. The version tracks `metadata.version` in `SKILL.md`.
 
+## 0.3.0
+
+- Added a conditional feasibility preflight for permission, offline, data, native-runtime, and performance risks, with fallbacks and verification instead of a misleading numeric score.
+- Added trust, emotional-design, and recovery guidance for high-value mobile moments, including finance, permissions, health, checkout, onboarding, and privacy.
+- Made implementation scope explicit: React Native and Expo are the concrete code path, while native iOS and Android implementation requires inspecting the appropriate native project and toolchain.
+- Extended review checks and evaluation coverage for risky mobile features and stack-appropriate implementation advice.
+
+## 0.2.0
+
+- Fixed form guidance for iOS `phone-pad`, which does not fire `onSubmitEditing`, and made password autofill hints safe across platforms.
+- Fixed loading button examples so their visual, interactive, and accessibility disabled states agree.
+- Added reduced-motion detection for React Native and explicit fallback guidance.
+- Added adaptive-window, external-input, RTL, and localization guidance plus corresponding QA checks.
+- Added stable review rule IDs, a terse review format, and a 12-case evaluation suite for maintainers.
+- Added component-contract guidance for reusable primitives and refreshed canonical sources.
+
 ## 0.1.0
 
 - Corrected `forms.md` focus flow: `returnKeyType` only relabels the return key; the anatomy example now wires `onSubmitEditing` and `submitBehavior` to advance focus.

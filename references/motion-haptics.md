@@ -26,7 +26,28 @@ This table mirrors the canonical `MOTION_INTENSITY` definition in `references/de
 | 7-8 | Shared element moments, parallax, richer success states |
 | 9-10 | Highly choreographed or experimental, only for briefs that call for it |
 
-Always support reduced motion by disabling nonessential transforms, parallax, and looping animations.
+Always support reduced motion by disabling nonessential transforms, parallax, and looping animations. Keep essential feedback, but make it immediate or use a simple opacity change.
+
+In React Native, check the current preference and subscribe to changes rather than reading it once at app start:
+
+```tsx
+import { useEffect, useState } from 'react';
+import { AccessibilityInfo } from 'react-native';
+
+function useReducedMotion() {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    AccessibilityInfo.isReduceMotionEnabled().then(setEnabled);
+    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setEnabled);
+    return () => subscription.remove();
+  }, []);
+
+  return enabled;
+}
+```
+
+Use the returned value to remove decorative delays, loops, parallax, and large transforms. Check local Reanimated documentation before choosing its version-specific reduced-motion API.
 
 ## Implementation Choice
 

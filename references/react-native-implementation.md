@@ -1,5 +1,7 @@
 # React Native Implementation
 
+Use this reference for concrete React Native and Expo implementation. For SwiftUI or Jetpack Compose code, inspect the native project and current framework documentation first; do not translate React Native props or Expo modules directly into native APIs.
+
 Use this for React Native and Expo component architecture, tokens, state coverage, lists, images, storage, forms, package checks, and implementation review.
 
 ## Inspect Before Importing
@@ -80,15 +82,17 @@ Use a 4pt rhythm for most spacing. Small exceptions are fine for optical alignme
 Use `Pressable` for most custom controls:
 
 ```tsx
+const isUnavailable = disabled || loading;
+
 <Pressable
   accessibilityRole="button"
   accessibilityLabel={label}
-  accessibilityState={{ disabled, busy: loading }}
-  disabled={disabled || loading}
+  accessibilityState={{ disabled: isUnavailable, busy: loading }}
+  disabled={isUnavailable}
   style={({ pressed }) => [
     styles.button,
-    pressed && !disabled && styles.buttonPressed,
-    disabled && styles.buttonDisabled,
+    pressed && !isUnavailable && styles.buttonPressed,
+    isUnavailable && styles.buttonDisabled,
   ]}
   onPress={onPress}
 >
@@ -97,6 +101,12 @@ Use `Pressable` for most custom controls:
 ```
 
 Do not wrap every button in Gesture Handler/Reanimated unless interaction complexity requires it.
+
+## Component Contracts
+
+When creating or changing a reusable primitive, document its purpose, anatomy, variants, and supported states before adding props. Keep variant names semantic (`primary`, `danger`, `quiet`) rather than visual (`blue`, `rounded`).
+
+Every interactive component needs a tested contract for default, pressed, focused, disabled, loading, selected/checked when applicable, error, accessible name/role/state, and long or scaled text. Prefer composition and local primitives over boolean-prop accumulation or a new UI library.
 
 ## Lists
 

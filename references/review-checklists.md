@@ -24,6 +24,8 @@ Use this before final delivery or when the user asks for a design review.
 
 - iOS: safe areas, Dynamic Type, edge-swipe back, sheets/alerts/context menus, and SF Symbols are appropriate.
 - Android: 48dp targets, system back, gesture nav, edge-to-edge/insets, Material 3 roles, and dynamic color are handled.
+- Window changes, orientation, and supported non-touch inputs do not hide or strand a task.
+- For localized products, long strings, RTL direction, and locale-specific date, number, and currency formats are checked.
 
 ## Accessibility
 
@@ -40,6 +42,7 @@ Use this before final delivery or when the user asks for a design review.
 
 - Tappable elements are visually obvious.
 - Pressed/focused, loading/submitting, disabled/unavailable, success, error/retry, empty, offline, and permission-denied states are handled where relevant.
+- When a feature uses permissions, data, native modules, or background work, its fallback, recovery, and verification path are explicit.
 
 ## React Native / Expo
 
@@ -51,9 +54,10 @@ Use this before final delivery or when the user asks for a design review.
 - Images have dimensions, caching/loading behavior, and accessible labels when meaningful.
 - Secure data is not stored in AsyncStorage.
 - Platform divergence is explicit and maintainable.
+- Implementation advice matches the project's target stack; React Native or Expo APIs are not presented as SwiftUI or Compose APIs.
 
 ## Verification
 
-Run what applies: typecheck/lint/tests, iOS/Android screenshots, dark mode, large fonts, screen reader spot check, keyboard/form flow, deep links/back behavior, and performance checks for long lists or heavy animation.
+Run what applies: typecheck/lint/tests, iOS/Android screenshots, dark mode, large fonts, screen reader spot check, keyboard/form flow, deep links/back behavior, compact/medium/expanded window checks, RTL/localization checks, and performance checks for long lists or heavy animation.
 
 If something cannot be verified, state it plainly in the final response.
