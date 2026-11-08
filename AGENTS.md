@@ -5,3 +5,13 @@ Published as an Agent Skill; the canonical content is `SKILL.md` plus `reference
 ## Release
 
 Distributed from GitHub `main` via `npx skills add RubenGlez/mobile-design`; there is no build or deploy pipeline. To ship: bump `metadata.version` in `SKILL.md`, prepend the matching entry to `CHANGELOG.md`, commit, then create and push an annotated tag `vX.Y.Z` on `main`. The tag is the release reference point; installers pull the current `main` tree. Licensed MIT.
+
+<!-- doctier:begin -->
+## Project context
+
+Managed by doctier — do not edit between the markers.
+
+Read these for project context:
+
+- `.rubstack/qa/adversarial-audit-2026-07-03.md`
+<!-- doctier:end -->

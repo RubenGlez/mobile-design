@@ -1,0 +1,5 @@
+# doctier recipients — one SSH public key per line (age reuses SSH keys).
+# Example:
+#   ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... alice@example.com
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEAXwc1cDFXvdhE3rJCUdhVG00Kgbkv+qAx2Wa2563yv ruben.daren@gmail.com
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFhSYc2OEplJI2whsu5rG55p1BXzr5CERryDoBK3xOH8 rubstack-cloud

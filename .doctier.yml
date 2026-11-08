@@ -1,0 +1,20 @@
+version: 1
+
+# .rubstack/ is the private doc store: encrypted in git, decrypted on checkout.
+# Prototype/spike code is sensitive scratch: never committed, dies with the worktree.
+docs:
+  - path: ".rubstack/**"
+    visibility: private
+    lifetime: durable
+
+  - path: "**/_prototype-*"
+    visibility: private
+    lifetime: ephemeral
+    sensitive: true
+
+  - path: "**/_spike/**"
+    visibility: private
+    lifetime: ephemeral
+    sensitive: true
+
+recipients_file: .doctier/recipients.txt
