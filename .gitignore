@@ -1,1 +1,5 @@
-.harness/
+# doctier:begin — managed by 'doctier init', do not edit
+.doctier/trash/
+**/_prototype-*
+**/_spike/**
+# doctier:end
