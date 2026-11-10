@@ -66,7 +66,7 @@ Rules:
 - Dismiss or commit on distance **or** velocity: past roughly half the travel, or a quick flick over a short distance. Snap back quickly when neither threshold is met.
 - Require a small movement threshold (about 10pt) before committing to a direction, then track 1:1. Recognize competing gestures in parallel and settle on one as soon as intent is clear.
 - Values that depend on the gesture (the dimming behind a sheet, the scale of the page beneath) derive from the gesture's progress, so they stay in sync when the user reverses.
-- Never conflict with system gestures: edge-swipe back, the home indicator, and the notification and control areas.
+- Never conflict with system gestures: edge-swipe back, the home indicator, and the notification and control areas. For sheets and bottom bars, start the drag from a handle or the sheet's surface above the home-indicator zone, and say in the spec how the conflict is avoided.
 - Every gesture-driven action also exists as a visible control.
 
 ## Loading Motion

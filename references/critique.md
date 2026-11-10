@@ -42,12 +42,14 @@ Review the flow, not only the screen. A good screen can break the navigation aro
 
 ### 4. Instruments
 
+Use the instruments to find problems; report their output only where it adds information. In a full critique, show the scores compactly, after the findings. In a quick critique, report findings only. Never let the scaffolding outweigh the fixes. Use rule IDs in the report only when the owner tracks them (code reviews, repeated audits); otherwise name the problem in plain words.
+
 Use the ones the artifact supports:
 
 - **Trunk test**, per screen. Dropped here with no context, can a user tell: which app this is, which screen, the main sections, their options here, where they are in the hierarchy, and how to search? 6/6 passes, 4–5 is partial, 3 or fewer is a P1 finding however polished it looks.
 - **Five-second test.** Place, purpose, priority, next action, system state.
 - **Cognitive load.** Single focus, chunking into groups of four or fewer, visible grouping, clear hierarchy, one decision at a time, at most four options per decision point, no memory bridges between screens, progressive disclosure. Two or three failures is moderate load; four or more is high.
-- **Heuristics.** Score Nielsen's ten, 0–4 each: visibility of status, match with the real world, user control and freedom, consistency and standards, error prevention, recognition over recall, flexibility and efficiency, aesthetic and minimalist design, error recovery, help and documentation. Mark any heuristic the artifact cannot show as n/a with a reason, and total against the applicable maximum (for example /32). Most real apps score 20–32 out of 40. A 4 means genuinely excellent.
+- **Heuristics.** Score Nielsen's ten, 0–4 each: visibility of status, match with the real world, user control and freedom, consistency and standards, error prevention, recognition over recall, flexibility and efficiency, aesthetic and minimalist design, error recovery, help and documentation. Mark any heuristic the artifact cannot show as n/a with a reason, and total against the applicable maximum (for example /32). A 4 means genuinely excellent. Be strict and consistent, and don't cite benchmarks you can't source.
 - **Goodwill across a flow.** Start at 70. Drains: information the user wants is hidden (−15); interstitials, forced tours, or splash delays (−15); format punishment, such as rejecting spaces in a card number (−10); unnecessary data requests (−10); sloppy appearance (−10); each ambiguous choice (−5). Fills: top tasks are obvious (+10); graceful error recovery (+10); upfront about costs and limits (+5); each saved step, default, or autofill (+5). Report the meter step by step. Below 30 is critical; above 60 is healthy.
 - **Personas.** Walk the primary task as two or three of these, and report what broke for each, not generic profiles:
   - *Distracted one-hander*: thumb only, interrupted mid-flow, poor connection, returns later.
@@ -77,9 +79,9 @@ Use the ones the artifact supports:
 **Scope and coverage.** <depth, platforms, artifact limits; every lens marked reviewed, clear, or not reviewable and why>
 
 ### Findings
-| Sev | Rule | Where | Problem → Fix | Why it matters |
-| --- | --- | --- | --- | --- |
-| P1 | MD-002 | Inbox row, swipe-to-delete | Delete exists only as a swipe → add Delete to the row's context menu and to edit mode | Users who don't discover the gesture, and switch-access users, can't delete |
+| Sev | Where | Problem → Fix | Why it matters |
+| --- | --- | --- | --- |
+| P1 | Inbox row, swipe-to-delete | Delete exists only as a swipe → add Delete to the row's context menu and to edit mode | Users who don't discover the gesture, and switch-access users, can't delete |
 
 ### What works
 <two or three specific strengths, and why they work>
@@ -109,7 +111,7 @@ Rules for the report:
 
 ## Review Rule IDs
 
-Use these stable IDs in the Rule column so findings can be tracked across reviews. Report only rules that apply. Never invent a finding to cover the list.
+When the owner tracks findings across reviews, add a Rule column with these stable IDs. Report only rules that apply. Never invent a finding to cover the list.
 
 | ID | Rule |
 | --- | --- |

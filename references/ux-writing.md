@@ -81,6 +81,8 @@ Humor is fine only where the stakes are low and it never delays the task.
 | Instructions | 14 words is ideal; 20 at most |
 | Notifications | Title plus body, 10–15 words |
 
+Counts use real plural rules for each locale, never "item(s)" or a fixed "s". "1 member", "4 members", and "No members yet" are three different strings, and some languages need more than two forms. Specify each count string with its zero, one, and other forms.
+
 Comprehension falls quickly past about 14 words per sentence. Aim for grade 7–8 reading level for general audiences, 9–10 for professional tools. Leave room for about 30–40% expansion in translation (more for short labels), and never build sentences by concatenating fragments.
 
 ## Copy Tells

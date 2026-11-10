@@ -116,9 +116,11 @@ Platform guidance changes yearly (materials, navigation components, type scales,
 
 ## Output Contract
 
-For Design work, lead with the decisions and keep the recital short:
+The process (design read, thesis, dials, mirror test, rule IDs, reference names) is how you think. It is not what you deliver. Run it silently, and show the user only what changes their decisions: one line of read and inferences, then the design. Never use internal vocabulary such as "dials", "variance 5", "Floor", "reflex", or "MD-004" with the user, unless they asked for a formal review that tracks rule IDs. Mention the mirror test only when it changed something, in one line. Scale the answer to the task: a single control gets a short spec. Include a token table only when the visual system is in scope. Skip sections that don't apply.
 
-- **Read**: the design read, thesis, dials, and inferences made.
+For Design work, lead with the decisions:
+
+- **Read**: one line naming the reading and the inferences made.
 - **Structure**: screen or flow structure, navigation placement, primary action and its reach.
 - **System**: token intent (color roles with light and dark values and contrast figures, type roles, spacing, radius, elevation) or changes to the existing system.
 - **Signature**: the one remembered element, and why it belongs to this product.

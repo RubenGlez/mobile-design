@@ -18,7 +18,7 @@ For each high-value moment, define the trigger, the visible state change, the fe
 
 ## Privacy and Permissions
 
-- Ask only for what the feature needs, at the moment of need, after explaining the value in the app's own UI.
+- Ask only for what the feature needs, at the moment of need, after explaining the value in the app's own UI. State the cost in that same moment, before the system prompt: background location, continuous sensors, or uploads should say what they mean for battery and data.
 - Prefer the least invasive option the platform offers: a one-time or approximate location, a limited photo selection, a system picker instead of full library access.
 - Design the declined state as a first-class state: what still works, what doesn't, and how to enable it later through Settings.
 - Don't require an account until the user needs an account-only feature. Offer the platform's privacy-preserving sign-in options where they exist.
@@ -62,5 +62,6 @@ Never design these. In Critique, flag them under MD-015 with confidence *likely*
 
 - Show the price per billing period, the renewal terms, the trial length and end date, and what the free tier keeps.
 - Make the close or "Continue with free" control visible and legible from the first frame.
+- Plan picker: a recommended plan can be labeled, but don't preselect a pricier plan the user didn't choose. Either nothing is selected until the user taps a plan, or the primary button states exactly what will be charged ("Start free trial, then $59.99/year on Mar 12"). Never preselect add-ons.
 - Label the plan the business recommends honestly, and keep the other options equally readable.
 - Restore purchases is easy to find.
