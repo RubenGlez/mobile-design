@@ -36,6 +36,20 @@ A refinement keeps the existing identity, behavior, and copy outside its scope. 
 5. **Produce.** Load `references/craft-floor.md` immediately before producing, plus the references the task needs (routing table below).
 6. **Verify.** Check the result against the Floor, all states, large text, dark mode, and the smallest supported width. When the result renders, look at it. State what could not be verified.
 
+## Mobile Constraints
+
+Keep these in mind on every task, whatever the stack. They are what make mobile design its own discipline.
+
+- **Small, variable screens.** Phones run from about 320 to 440pt wide in portrait. Design for the narrowest supported width first, then let the layout grow. Windows also change size with rotation, split screen, foldables, and tablets: compact under 600dp, medium 600–840dp, expanded 840dp and up. One screen, one job, with the primary content and action visible without hunting.
+- **Thumbs, not cursors.** Touch is imprecise and covers what it touches. Targets are at least 44pt/48dp, frequent actions sit within thumb reach in the lower half, and destructive actions stay out of accidental paths. There is no hover, so anything that looks interactive must be.
+- **System territory.** The status bar, notch or island, home indicator, navigation bar, and keyboard take space and own gestures. The keyboard alone can cover half the screen.
+- **Glanced at, interrupted, on the move.** Sessions are short and get cut off by calls, notifications, and app switching. Design for scanning in seconds, one-handed use, sunlight glare, noise, and walking. Work must resume where it stopped.
+- **Unreliable conditions.** Slow or missing networks, limited battery and data, older or low-end devices. Offline, loading, and degraded states are normal states.
+- **Personal devices, personal settings.** Larger text, dark appearance, Reduce Motion, screen readers, and the user's language and region are everyday preferences the design must follow.
+- **Two platforms with their own grammar.** iOS and Android users expect their own navigation, back behavior, controls, and type. Familiarity is part of usability.
+- **Multisensory feedback.** Touch feedback, motion, and haptics confirm actions in place of the clicks and hover states of desktop.
+- **Beyond the app's screens.** Notifications, widgets, live activities, shortcuts, permissions prompts, and the app icon and launch are all part of the experience.
+
 ## Platform Posture
 
 - Familiar components carry navigation and controls: tab bars, stacks, sheets, system back, switches, pickers, menus, text fields. A restyled control keeps its familiar size, placement, and behavior.

@@ -16,9 +16,9 @@ Design for the available window, not a named device. The same app moves between 
 
 | Window | Typical structure |
 | --- | --- |
-| Compact (most phones in portrait) | One pane, bottom navigation, reachable actions, no horizontal overflow |
-| Medium (large phones in landscape, small tablets, unfolded foldables) | A navigation rail or sidebar, wider margins, an optional supporting pane |
-| Expanded (tablets, desktop-class windows) | List-detail or supporting panes, persistent navigation, constrained line length, more density |
+| Compact (under 600dp; most phones in portrait, about 320–440pt wide) | One pane, bottom navigation, reachable actions, no horizontal overflow |
+| Medium (600–840dp; large phones in landscape, small tablets, unfolded foldables) | A navigation rail or sidebar, wider margins, an optional supporting pane |
+| Expanded (840dp and up; tablets, desktop-class windows) | List-detail or supporting panes, persistent navigation, constrained line length, more density |
 
 - **Restructure, don't stretch.** A phone layout scaled up on a tablet is the failure mode. Switch navigation (bar → rail or sidebar), use the extra width for list-detail, and turn sheets into popovers or side panels where the platform does.
 - Never stretch buttons, text lines, or cards across a wide window. Constrain them and use the space for structure.
