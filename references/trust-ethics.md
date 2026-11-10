@@ -62,6 +62,6 @@ Never design these. In Critique, flag them under MD-015 with confidence *likely*
 
 - Show the price per billing period, the renewal terms, the trial length and end date, and what the free tier keeps.
 - Make the close or "Continue with free" control visible and legible from the first frame.
-- Plan picker: a recommended plan can be labeled, but don't preselect a pricier plan the user didn't choose. Either nothing is selected until the user taps a plan, or the primary button states exactly what will be charged ("Start free trial, then $59.99/year on Mar 12"). Never preselect add-ons.
+- Plan picker: a recommended plan may carry an honest label ("Best value", computed from the real prices), but no plan is preselected. The user taps a plan, and then the primary button states exactly what will be charged and when ("Start free trial, then $59.99/year on Mar 12"). Never preselect add-ons.
 - Label the plan the business recommends honestly, and keep the other options equally readable.
 - Restore purchases is easy to find.

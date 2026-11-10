@@ -41,6 +41,12 @@ The smallest margins were in case 18 (microcopy, 4.50 vs 4.33) and case 03 (crit
 | Plurals not addressed | `ux-writing.md`: zero/one/other forms per locale |
 | Sheet spec didn't address home-indicator conflict | `motion-haptics.md`: drag from a handle above the system zone, stated in the spec |
 
+## Verification of the Fixes
+
+After the fixes, cases 06, 17, 19, and 22 were rerun with the updated skill and judged blind against the first skill run. The updated skill won 4/4, with a mean of 4.79 against 4.29. Restraint rose from 3.00 to 4.50 and hierarchy from 4.00 to 5.00. Answers were 8% shorter on average (22% shorter on case 22), and process vocabulary nearly disappeared. The sheet spec now resolves the home-indicator conflict.
+
+One gap remained. Case 19 still preselected the annual plan, because the paywall rule allowed preselection when the charge was stated. The rule now forbids preselecting any plan.
+
 ## Limitations
 
 - One run per case per arm. Variance between runs wasn't measured.
