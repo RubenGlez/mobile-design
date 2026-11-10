@@ -1,148 +1,89 @@
 # Visual System
 
-Use this when the task involves visual direction, layout, palette, surfaces, imagery, iconography, shape, or perceived quality.
+Use for visual direction, layout, surfaces, depth, imagery, iconography, shape, and perceived quality. In an app, the visual world contributes type, palette, shape, density, imagery, and one signature move. It never replaces the navigation model or the familiar controls.
 
-## Visual Direction
+## Direction From the Product
 
-Choose a visual language from product context:
+Draw the visual world from the subject: its materials, artifacts, vernacular, and the scene where the app is used. A trail app can borrow from topographic maps, a recipe app from cookbooks and kitchen light, a ledger from financial print. Translate the subject into tokens. Do not costume the interface as the object: no fake paper, no leather textures, no instrument bezels.
 
-| Context | Good direction | Avoid by default |
+| Context | Direction | Avoid by default |
 | --- | --- | --- |
-| Trust and risk | orderly grids, explicit states, stable color | playful bounce, mystery meat icons |
-| Personal wellbeing | soft contrast, supportive copy, calm hierarchy | sterile dashboards, harsh warning colors |
-| Performance and fitness | bold contrast, large metrics, quick controls | delicate type, low outdoor contrast |
-| Commerce and editorial | product imagery, strong detail pages, confident CTAs | crowded cards, weak product inspection |
-| Productivity | quiet surfaces, dense lists, predictable affordances | decorative gradients, excessive animation |
-| Media | immersive content, scrims, strong playback affordances | heavy chrome, generic thumbnails |
+| Trust and risk | Orderly structure, explicit states, stable color | Bounce, ambiguous icons, decorative effects near money |
+| Wellbeing | Soft contrast that still passes AA, supportive hierarchy | Sterile dashboards, harsh warning colors |
+| Performance and outdoor | Bold contrast, large figures, quick controls | Delicate type, low-contrast accents in sunlight |
+| Commerce and editorial | Imagery that lets people inspect the product, confident CTAs | Crowded grids, generic thumbnails |
+| Productivity | Quiet surfaces, dense lists, predictable affordances | Card mosaics, decorative gradients |
+| Media | Content edge to edge, scrims, strong playback controls | Heavy chrome over content |
 
-## Bias Correction
+## Light and Dark
 
-Avoid unsupported defaults:
+Choose the default from the use scene (who, where, under what light), not from the category. When the app follows the system appearance, design both themes deliberately.
 
-- Purple/blue glow gradients unless the brand or brief calls for that exact direction.
-- Decorative mesh backgrounds behind ordinary app screens.
-- Card-inside-card nesting.
-- Pills/tags that do not add decision-making value.
-- Generic avatar, thumbnail, and chart placeholders.
-- Static centered web-style hero screens where an app-native task flow is needed.
-- Copy that describes features instead of helping the user act.
+Dark mode is its own design:
+
+- Use near-black surfaces when depth and legibility matter. Use true black for OLED-first media or always-on contexts.
+- Express elevation by making surfaces lighter as they rise, more than with shadows.
+- Desaturate and slightly lighten accents so they don't vibrate against dark surfaces. Recheck every contrast figure.
+- Redesign image scrims, charts, maps, and illustrations for dark backgrounds.
+- Ease theme switches. Avoid abrupt full-screen brightness jumps.
 
 ## Hierarchy Before Decoration
 
-When a screen feels weak, improve fundamentals before adding effects:
+When a screen feels weak, fix in this order: real content, grouping, spacing, type scale and weight, contrast, color, depth, motion. Borders, shadows, gradients, and animation never compensate for an unclear hierarchy.
 
-1. Real content and task-specific copy.
-2. Layout grouping.
-3. Spacing.
-4. Type scale and weight.
-5. Contrast.
-6. Color.
-7. Depth/materials.
-8. Motion.
-
-Borders, shadows, gradients, and animation should not compensate for unclear information hierarchy.
-
-## Color Discipline
-
-- One primary brand accent is a strong default. Broader palettes are fine when defined as semantic roles or an existing design system.
-- Do not use semantic colors as decoration.
-- Do not mix warm and cool neutral systems accidentally.
-- Check contrast in both light and dark modes.
-- Prefer platform semantic colors for native code unless brand tokens are required.
-- For token examples, read `references/typography-color.md`.
-
-## Dark Mode
-
-Dark mode is a separate design, not an inverted light theme.
-
-- Choose true black only when battery, OLED aesthetics, or media immersion justify it.
-- Use near-black surfaces when readability and depth matter more than maximum OLED savings.
-- Raise contrast for text and controls without making every border bright.
-- Ensure image scrims, charts, maps, and shadows are redesigned for dark mode.
-- On Android, dynamic color can alter accent roles; test generated schemes.
-
-## Surfaces and Depth
-
-Depth should explain hierarchy:
-
-- Background: full-screen base.
-- Surface: grouped content, inputs, list containers.
-- Elevated: modal, sheet, popover, floating controls.
-
-Use cards when containment clarifies the task. Use separators, whitespace, or typography when containment would add noise.
-
-Blur/glass:
-
-- Good for iOS tab bars, sheet headers over content, media overlays, and transient layers.
-- Weak for ordinary repeated cards or dense forms.
-- Must include contrast protection for text.
-
-Shadows:
-
-- Use one elevation scale.
-- Tint or soften shadows to the environment.
-- Avoid stacking shadowed containers.
-- On Android Material 3, tonal elevation often matters more than drop shadow.
-
-## Imagery
-
-Use real or contextually meaningful imagery:
-
-1. User-provided assets.
-2. Product/domain-specific images from the app data.
-3. Generated or searched assets when the task allows it.
-4. Seeded placeholders only as temporary scaffolding.
-
-For text over images:
-
-- Add a scrim or gradient.
-- Check contrast at multiple crop positions.
-- Avoid dark, blurred, generic stock imagery when the user needs to inspect the subject.
-
-For implementation details, read `references/react-native-implementation.md`.
-
-## Iconography
-
-- Use one icon family per surface unless platform divergence is deliberate.
-- iOS-native work: prefer SF Symbols / `expo-symbols` where available.
-- Android-native work: prefer Material Symbols or Material Icons.
-- Cross-platform custom apps: use an installed family such as Phosphor, Tabler, or the repo's existing icon system.
-- Keep sizes on a 4pt rhythm: 16, 20, 24, 28, 32.
-- Pair icon-only controls with accessible names and visible affordance.
-
-## Shape and Radius
-
-Pick a radius system and apply it consistently:
-
-| System | Use for |
-| --- | --- |
-| Sharp | utilities, technical tools, data-dense enterprise |
-| Soft | most consumer and productivity apps |
-| Round | social, playful, wellness, friendly apps |
-| Mixed with rule | e.g. cards 16, inputs 12, primary buttons pill |
-
-Document intentional exceptions. Random radius variation reads as accidental.
+Test it: blur the screen or view it at thumbnail size. The primary element and the primary action should still be the first things you see. Remove all decorative shadows: if the design no longer reads, depth was standing in for hierarchy.
 
 ## Layout
 
-Use mobile-native hierarchy:
+- Content first, with the primary action reachable. Bottom-anchored actions for linear flows, and sticky controls only when users need them repeatedly while scrolling.
+- Lists for scanning, grids for visual comparison, carousels only when horizontal browsing is the core behavior.
+- Align to the platform's leading edge. Centered layouts are for single-purpose moments (empty states, confirmations), not for content screens.
+- Use one spacing scale on a 4pt base (4, 8, 12, 16, 20, 24, 32, 40, 48…). Related items sit close; groups are clearly separated. If items in a group are 8 apart, the gap between groups is roughly double.
+- Use standard screen margins (typically 16–20pt/dp on phones) and keep them consistent. Constrain line length on wide windows.
+- Asymmetric or editorial compositions must collapse to a stable single column at the smallest width, without horizontal scrolling.
 
-- Content first, action reachable.
-- Bottom anchored CTAs for linear flows.
-- Sticky controls only when repeated access matters.
-- Lists for repeated scanning, grids for visual comparison, carousels only when horizontal browsing is core.
-- Featured items may break grid rhythm, but maintain predictable scroll and tap behavior.
+## Color
 
-For small screens, asymmetric or editorial layouts must collapse into stable single-column patterns without horizontal scroll.
+- Define roles, not raw colors: background, surface, surface-raised, text-primary, text-secondary, separator, accent, on-accent, and status roles (success, warning, danger, info). Give each a light and a dark value.
+- A strong default: one committed brand color for primary actions, selection, and key state. It carries meaning, so don't use it for decoration.
+- Status colors mean status only. Don't use red for a brand moment.
+- Keep one neutral temperature (warm or cool), and don't mix them by accident.
+- On colored surfaces, tint secondary text and icons from that hue or from the foreground. Never use flat grey.
+- On Android, plan whether the app adopts the user's dynamic color, and keep a static fallback scheme.
 
-## Visual Review
+## Surfaces and Depth
 
-Before shipping:
+Depth explains hierarchy: **background** (the screen), **surface** (grouped content, inputs), **raised** (floating controls, cards that move), **overlay** (sheets, menus, dialogs).
 
-- Does the five-second screen test pass: place, purpose, priority, next action, state?
-- Does the screen have a clear primary job?
-- Are accent, radius, spacing, and icon choices consistent?
-- Are cards and effects communicating hierarchy rather than decoration?
-- Is the content realistic?
-- Does dark mode feel intentionally designed?
-- Does the screen still work with large text and long strings?
+- Use one elevation scale. Shadows have an offset and a soft blur, and are tinted toward the surface below. A zero-offset glow is decoration, not depth.
+- Shadows mark elevation. Borders mark structure (dividers, input outlines) and state (focus, selection). Don't use a border to fake depth, or a shadow to fake a divider.
+- Use a card only when the content is a distinct object, often tappable. Otherwise use grouped lists, spacing, and separators. Never put a card inside a card.
+- Translucent materials belong where the platform puts them: bars, sheets, and overlays floating above moving content. Never stack a translucent layer on another, keep text legible over them (heavier weight, higher contrast), and provide an opaque fallback when Reduce Transparency is on.
+- Dim the background to focus a modal task. Use separation without a scrim for parallel, non-blocking panels.
+
+## Shape
+
+- Choose a radius system and apply it with rules: sharp (4–8) for tools and data, soft (10–16) for most apps, round (20+) for playful or social products.
+- Nested corners are concentric: outer radius = inner radius + padding. Equal radii on a parent and its child look pinched.
+- Use pills and capsules for controls whose shape is a platform convention. Don't turn every tag into a pill by reflex.
+
+## Imagery
+
+Order of preference: the user's or product's real content, then imagery specific to the domain, then generated or licensed imagery that fits the world, then labeled slots that say what belongs there.
+
+- Crop to the subject. Check the crop at every aspect ratio the layout uses.
+- Text over imagery needs a scrim or gradient and contrast checked at the worst crop.
+- Use one treatment across the app (color grading, framing, corner style).
+- Reserve the space for an image before it loads, and show a meaningful placeholder when it is missing.
+
+## Iconography
+
+- Use one icon family per app, with one stroke weight matched to the adjacent text weight (a heavier stroke beside semibold text). Never mix families on one surface.
+- On iOS, prefer SF Symbols. On Android, prefer Material Symbols. A custom family must match their optical sizes and metrics.
+- Outline icons by default and filled for the selected state, applied consistently at each level of the hierarchy.
+- Use icon sizes from a scale (for example 16, 20, 24, 28), and align icons to the text baseline or optical center.
+- Icon-only controls must be universally recognizable, have an accessible name, and keep a full-size hit area. When in doubt, add a text label.
+
+## Signature Moves
+
+Spend boldness once per screen. Candidates: a distinctive treatment of the hero object (the number, the map, the cover), a committed color field in one region, a display type moment, a characteristic transition, or a custom data visualization. Around it, everything stays quiet and systematic.

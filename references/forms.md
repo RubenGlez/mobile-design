@@ -1,166 +1,98 @@
 # Forms
 
-Use this for login, signup, checkout, settings, profile editing, search filters, creation flows, payment, and any mobile input-heavy screen.
+Use for sign-in, sign-up, checkout, settings, profile editing, creation flows, filters, and any input-heavy screen. On mobile the keyboard takes about half the screen, typing is slow and error-prone, and interruptions are constant. Every field must earn its place.
 
-## Form Principles
+## Principles
 
-- Group fields by user mental model, not database schema.
-- Keep labels visible; placeholders are examples, not labels.
-- Validate early enough to help, late enough to avoid scolding.
-- Preserve user input on error, retry, navigation, and app backgrounding when possible.
-- Make the submit state explicit: available, disabled, loading, success, error.
-- Design for keyboard, autofill, password managers, and large text from the start.
+- **Ask less.** Remove fields, infer what can be inferred, default sensibly, and defer optional fields until after the first success.
+- **Group by the user's mental model**, not the database schema. One topic per group, with a short heading when there are several groups.
+- **Keep labels visible.** Placeholders are examples of the format; they disappear as soon as typing starts.
+- **Validate to help, not to scold.** Check on blur or after the first submit attempt, never on the first keystroke.
+- **Preserve everything.** Input survives errors, failed submits, navigation, backgrounding, and rotation.
+- **Accept liberally.** Take spaces, dashes, pasted values, and different formats, then normalize them. Never block typing; explain instead.
 
-## Anatomy
+## Field Anatomy
 
-Recommended field block:
+Every field has: a visible label; the input, sized as a full-width touch target at least 44pt/48dp tall; optional helper text (why it's needed or its format); an error slot that doesn't shift other content when it appears; and the current state (empty, focused, filled, error, disabled, read-only) visible without relying on color alone.
 
-```tsx
-// passwordRef points at the next field. returnKeyType only relabels the
-// return key; onSubmitEditing is what actually advances focus.
-<View style={styles.field}>
-  <Text style={styles.label}>Email</Text>
-  <TextInput
-    value={email}
-    onChangeText={setEmail}
-    keyboardType="email-address"
-    autoCapitalize="none"
-    autoComplete="email"
-    textContentType="emailAddress"
-    returnKeyType="next"
-    submitBehavior="submit"
-    onSubmitEditing={() => passwordRef.current?.focus()}
-    accessibilityLabel="Email"
-    accessibilityHint="Enter the email address for your account"
-    style={[styles.input, emailError && styles.inputError]}
-  />
-  {emailError ? (
-    // Live region covers Android. announceForAccessibility (below) covers iOS.
-    <Text accessibilityLiveRegion="polite" style={styles.error}>
-      {emailError}
-    </Text>
-  ) : (
-    <Text style={styles.helper}>Use the email where you receive receipts.</Text>
-  )}
-</View>
-```
+## Input Intent
 
-On iOS, `accessibilityLiveRegion` is a no-op, so announce validation results explicitly when they arrive:
+Specify each field's intent so any implementation can pick the right keyboard, autofill, and behavior:
 
-```tsx
-import { AccessibilityInfo, Platform } from 'react-native';
+| Field | Keyboard | Autofill / system help | Notes |
+| --- | --- | --- | --- |
+| Email | Email keyboard | Email autofill | No autocapitalization or autocorrect |
+| New password | Default, secure entry | Password manager: generate a strong password | Show/hide toggle; state the requirements up front |
+| Existing password | Default, secure entry | Password manager: fill | Always allow paste |
+| One-time code | Numeric | System code-from-SMS or email autofill | Accept paste; advance automatically; offer resend with a visible cooldown |
+| Phone | Phone pad | Phone autofill | Country picker; the phone pad often has no "next" key, so provide a visible Continue |
+| Name | Default, capitalize words | Name autofill | Don't force first/last splits; support single names and long names |
+| Address | Default | Address autofill, or system address search | Country-aware fields; avoid long dropdowns |
+| Amount / number | Decimal or number pad | — | Locale decimal separator; show the currency; keep the full value visible |
+| Date | System date picker | — | Avoid free-text dates; show the format in the user's locale |
+| Search | Default with Search key | Recent searches | Clear button; suggestions while typing |
+| Card | Number pad | Card scan or wallet where available | Group digits as typed; detect the card type |
 
-useEffect(() => {
-  if (emailError && Platform.OS === 'ios') {
-    AccessibilityInfo.announceForAccessibility(emailError);
-  }
-}, [emailError]);
-```
+Choose selection over typing when the options are known and few: segmented controls for 2–4 options, a list or picker for more, and an "Other" choice with free text as the fallback.
 
-## Input Prop Defaults
+## Focus and Keyboard Flow
 
-| Field | Key props |
-| --- | --- |
-| Email | `keyboardType="email-address"`, `autoCapitalize="none"`, `autoComplete="email"`, `textContentType="emailAddress"` |
-| Password | `secureTextEntry`, `autoComplete="current-password"` or `"new-password"`; pair iOS with `textContentType="password"` or `"newPassword"` |
-| Phone | `keyboardType="phone-pad"`, `autoComplete="tel"`, region-aware formatting; do not rely on Return to advance on iOS |
-| Number | `keyboardType="number-pad"` or `"decimal-pad"`, validate locale/decimal rules |
-| Name | `autoComplete="name"`, avoid disabling autocorrect unnecessarily |
-| Address | platform autofill fields, multiline only where useful |
-| Search | `returnKeyType="search"`, clear button, recent/empty state |
-| One-time code | `keyboardType="number-pad"`, `textContentType="oneTimeCode"` (iOS), `autoComplete="sms-otp"` (Android), paste support |
-
-Always check current React Native and platform docs when using newly added autofill values.
-
-## Focus Flow
-
-- `returnKeyType="next"` only relabels the return key. Advance focus with `onSubmitEditing={() => nextRef.current?.focus()}` plus `submitBehavior="submit"` (older RN: `blurOnSubmit={false}`).
-- Final field uses `returnKeyType="done"`, `"go"`, `"send"`, or `"search"` based on task.
-- On iOS, `keyboardType="phone-pad"` does not fire `onSubmitEditing`. Provide a visible next/continue action or an input accessory control when the user must advance.
-- Move focus programmatically only when it helps.
-- Scroll the focused input above the keyboard.
-- Do not hide the submit button behind the keyboard unless the keyboard submit path is clear.
+- The return key moves to the next field and submits on the last one, labeled for the action ("Next", "Go", "Send", "Search").
+- When a keyboard has no return key (phone and number pads), give a visible way forward.
+- The focused field and the primary action stay visible above the keyboard. The screen scrolls; content is never hidden behind the keyboard.
+- Don't move focus unexpectedly. Autofocus the first field only when the screen exists solely to collect that input.
 
 ## Validation
 
 Use three layers:
 
-1. Formatting constraints while typing only when they prevent impossible input.
-2. Inline validation on blur or after first submit attempt.
-3. Server validation after submit with field-specific messages where possible.
+1. **Constraints while typing**, only to prevent impossible input (letters in a number pad field), and always with an explanation.
+2. **Inline validation** on blur or after the first submit attempt, placed next to the field: "[Field] + requirement" (`ux-writing.md`).
+3. **Server validation** after submit, mapped back to the specific field whenever possible.
 
-Avoid:
+Don't:
 
-- Red errors before the user has had a chance to finish.
-- Clearing fields after a failed submit.
-- Generic `Something went wrong` when a field can be identified.
-- Disabled submit with no explanation.
+- Show red errors before the user had a chance to finish.
+- Clear fields after a failed submit.
+- Show "Something went wrong" when a specific field is at fault.
+- Disable the submit button with no explanation. Prefer keeping it enabled, then on tap show what is missing and move focus to the first problem.
 
-## Submit Button
+## Submit
 
-Submit state must communicate:
+- Name the outcome: "Create account", "Pay $42.18", "Save address".
+- While submitting, keep the label, show progress, and prevent duplicate submits.
+- On success, continue the flow with continuity or confirm briefly.
+- On failure, keep every value, explain what happened, and offer to retry.
 
-```tsx
-const isUnavailable = !canSubmit || isSubmitting;
+## Checkout and Payments
 
-<Pressable
-  accessibilityRole="button"
-  accessibilityState={{ disabled: isUnavailable, busy: isSubmitting }}
-  disabled={isUnavailable}
-  onPress={submit}
-  style={({ pressed }) => [
-    styles.submit,
-    pressed && !isUnavailable && styles.submitPressed,
-    isUnavailable && styles.submitDisabled,
-  ]}
->
-  <Text style={styles.submitLabel}>
-    {isSubmitting ? 'Saving' : 'Save changes'}
-  </Text>
-</Pressable>
-```
+- Show the total, and what changes it, from the first price on. No fees revealed late.
+- Make shipping, payment, promo codes, and contact details editable in place.
+- Prefer the platform's wallet and payment sheets when available.
+- The final action names the amount, and the screen shows its processing state until the payment is confirmed. Never show pending as success.
+- After a failure, keep the cart and every field, and offer a different payment method.
 
-Rules:
+## Sign-In and Sign-Up
 
-- Use task-specific labels: `Pay $42.18`, `Create account`, `Save address`.
-- Show progress for async submit.
-- Prevent duplicate submit.
-- On success, either navigate with continuity or show a short confirmation.
-- On failure, preserve data and offer retry.
+- Support password managers, passkeys, and platform sign-in where they are available.
+- Never block paste in password or code fields.
+- Let people explore before creating an account whenever the product allows it.
+- Error copy is calm and specific enough to recover, without revealing whether an account exists when security policy forbids it.
+- Account recovery is one tap away from the sign-in screen.
 
-## Checkout Forms
+## Search and Filters
 
-Checkout needs extra trust and recovery:
+- Before typing: recent searches, suggestions, and categories. Never a blank screen.
+- While typing: suggestions, highlighted matches, and fast results.
+- No results: echo the query, suggest corrections, and offer to broaden it or clear filters.
+- Active filters are always visible, with a count and a one-tap reset. Apply small, fast filters live; use an explicit Apply for expensive ones.
 
-- Show total cost and what changes it.
-- Make shipping, payment, promo, and contact info editable.
-- Use native payment sheets when available and appropriate.
-- Keep destructive or irreversible actions explicit.
-- Show processing state that prevents double payment.
-- Preserve cart and entered fields after payment errors.
+## Form Checklist
 
-## Auth Forms
-
-- Support password managers and autofill.
-- Do not block paste into password or one-time-code fields.
-- Avoid revealing whether an email exists unless product/security policy allows it.
-- Rate-limit and error-copy should be calm and specific enough to recover.
-- Use secure storage only after successful auth.
-
-## Search and Filter Forms
-
-- Search should show recent, suggested, empty, loading, and no-results states.
-- Filters need clear applied state and reset.
-- Avoid hiding active filters behind a collapsed sheet without a visible count.
-- Submit-on-change is good for small local filters; explicit apply is better for expensive remote filters.
-
-## Form QA
-
-- Keyboard does not cover focused field or primary action.
-- Return key flow works: verify on device/simulator that the next-field key advances focus (not just that `returnKeyType` is set).
-- Autofill/password manager works.
-- Large text does not clip labels/errors.
-- VoiceOver/TalkBack reads label, value, error, and state.
-- Offline/server error preserves input.
-- Submit cannot be triggered twice accidentally.
-- Sensitive values are handled securely.
+- The keyboard never hides the focused field or the primary action.
+- The return key and visible Continue path work through the whole form.
+- Autofill and password managers fill the right fields.
+- Labels, helper text, and errors survive the largest text size and translation.
+- A screen reader announces each label, value, error, and state.
+- An offline or server error keeps all input.
+- Submit can't fire twice.

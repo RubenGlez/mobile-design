@@ -1,153 +1,103 @@
 # Screen Patterns
 
-Use this when the task asks for a whole mobile screen, flow, or redesign. These are templates for thinking, not finished visual styles.
+Use when the task is a whole screen, flow, or redesign. These are structures to think with, not finished styles. Every pattern still gets a signature, all its states, and the craft floor.
 
-## Universal Screen Anatomy
+## Universal Anatomy
 
-Every screen should answer:
+Every screen answers: where am I, what matters most, what can I do next, and what state is the system in?
 
-- Where am I?
-- What matters most?
-- What can I do next?
-- What state is the system in?
-- What happens if content is empty, loading, unavailable, or errored?
-
-Default structure:
-
-1. System-safe container with background.
-2. App/navigation header only when it helps orientation.
-3. Primary content area.
-4. Reachable primary action when the screen has a linear job.
+1. A container that respects the safe areas, with its background.
+2. A title or navigation bar, only when it helps orientation.
+3. The primary content, with the signature object first.
+4. A reachable primary action when the screen has a linear job.
 5. Secondary actions placed by priority and risk.
-6. State surfaces for loading, empty, error, offline, and permission cases.
+6. State surfaces: loading, empty, error, offline, permission (`states-edge-cases.md`).
 
-## Feed or List Screen
+## List or Feed
 
-Use for inboxes, products, workouts, recipes, transactions, chats, tasks, search results.
+For inboxes, products, transactions, tasks, workouts, chats, and search results.
 
-Structure:
+- A title and at most one high-value action in the header, not a toolbar full of icons.
+- Add search and filters when the list is long enough to need them, and keep active filters visible.
+- Rows have a stable hierarchy: the primary identifier, the key metadata, then status or action. The value the user scans for (amount, time, status) gets the strongest treatment, never weaker than its label.
+- Operational lists use separators and compact rows. Discovery lists are image-led, with one featured item allowed to break the rhythm.
+- Pull to refresh for remote content that changes. Swipe actions also exist as visible controls.
+- Empty: the first-use invitation. Error: retry, with cached rows kept.
 
-- Header with title and one high-value action, not a toolbar full of icons.
-- Search/filter only if the list is large enough to need it.
-- Content list with stable row hierarchy: title, key metadata, status/action.
-- Pull-to-refresh when remote content changes.
-- Empty state that explains how to create or discover content.
-- Error state with retry and any cached data preserved if available.
+## Detail
 
-Design choices:
+For products, profiles, articles, bookings, transactions, recipes, and media.
 
-- Dense operational lists: separators, compact rows, fewer cards.
-- Visual discovery lists: image-led rows/cards and varied feature item.
-- Risk/finance lists: explicit amounts, dates, statuses, and no ambiguous color-only signals.
+- The entity is unmistakable in the first view: its image, name, status, and key number.
+- Context metadata sits under the identity. The primary action is in the thumb zone if the screen is action-oriented. Secondary actions are grouped and quieter.
+- Use a sticky action bar only when users need the action after scrolling.
+- Commerce: inspect the product (zoom, variants), price, availability, delivery, and returns confidence. Transactions: amount, counterparty, date, status, and a path to dispute or get help. Profiles: identity, relationship state, privacy controls.
+- Loading keeps the detail layout's shape, so content doesn't jump.
 
-Checklist:
+## Home
 
-- First visible row communicates the list's purpose.
-- Row tap area meets platform minimum.
-- Swipe actions have visible alternatives.
-- Filters have clear applied/empty states.
-- Long names and large text do not break rows.
+For apps checked repeatedly: finance, health, productivity, fitness.
 
-## Detail Screen
+- Lead with the signature object or the most important status or next action, not a greeting above equal stat cards.
+- Order the following modules by frequency and urgency, and show what changed since the last visit.
+- Metrics carry labels, units, and context (compared with what). Show a trend only when it is measured.
+- Alerts interrupt only when action is needed. Empty modules explain setup, or collapse.
+- Personalize by user stage: guided and minimal for new users, routine-focused for returning users, denser stats and shortcuts for experts.
 
-Use for product, profile, article, booking, transaction, recipe, task, workout, or media details.
+## Search
 
-Structure:
+- Before typing: recent searches, suggestions, and categories. Never a blank screen.
+- While typing: fast suggestions with the matched text highlighted.
+- Results: grouped by type when that helps, with filters visible and resettable.
+- No results: echo the query, suggest fixes, and offer to broaden it.
 
-- Strong identifying content at top: name/image/status/key number.
-- Contextual metadata under the primary identity.
-- Primary action close to thumb zone if action-oriented.
-- Secondary actions grouped and de-emphasized.
-- Related content or history below the main decision area.
+## Status Tracking
 
-Design choices:
+For orders, deliveries, rides, applications, and support cases.
 
-- Product/detail commerce: image inspection, price, variants, availability, return/delivery confidence.
-- Transaction/finance: amount, merchant, date, status, dispute/support path.
-- Profile/social: identity, relationship state, recent activity, privacy controls.
-- Recipe/media: image or playback first, then steps/details.
+- Open with a confident status sentence ("Arriving by 6:40 pm").
+- Show a visual timeline of the steps with the current one emphasized, not a list of dates.
+- Humanize it where real data exists: courier name, photo, contact actions.
+- Live updates show up in place. Consider a Live Activity or a widget for time-bound tasks (`platform-ios.md`, `platform-android.md`).
 
-Checklist:
+## Form, Creation, or Checkout
 
-- The primary entity is unmistakable in the first viewport.
-- Primary action is visible without fighting content.
-- Sticky action bar only if users need it after scrolling.
-- Dangerous actions are separated and confirmed.
-- Loading state preserves the expected detail layout.
+Use with `forms.md`.
 
-## Form, Checkout, or Creation Screen
+- A title that names the task, and fields grouped by mental model.
+- Keyboard-aware layout, a reachable primary action that shows its state, and drafts preserved.
+- Short forms fit on one screen. Long ones split into steps with visible progress and a way back.
+- Irreversible or paid actions get a review step with the full cost.
 
-Use this with `references/forms.md`.
+## Settings
 
-Structure:
+- Grouped lists by topic, with the most used first. Search when there are many settings.
+- Toggles take effect immediately. Changes with consequences explain them inline.
+- Privacy and permission settings link to the system settings rather than duplicating them.
+- Destructive account actions sit at the end, separated, explicit, and confirmed.
 
-- Clear title that names the task.
-- Fields grouped by mental model, not backend schema.
-- Inline helper/error text.
-- Keyboard-aware scroll and focus movement.
-- Primary submit action reachable and stateful.
-- Review/confirmation step for irreversible or payment flows.
+## Onboarding
 
-Design choices:
+Use onboarding only when it prevents later confusion or collects setup the product truly needs.
 
-- Short forms can be one screen.
-- Long forms should chunk into sections or steps.
-- Checkout needs cost transparency, edit paths, and trust markers.
-- Creation flows should preserve drafts.
+- Prefer **task-first** entry: start the core action and explain in context.
+- Other options: a single setup screen (a goal, a preference), a preview of a realistic finished state, or a guided checklist for genuinely multi-step tools.
+- Three screens or fewer unless onboarding is the product. Every step can be skipped unless it is required. Defer sign-in until the user needs an account-only feature.
+- Ask for permissions at the moment of value, not in a row at launch.
+- Primary actions are concrete: "Set a running goal", "Import contacts".
+- The app must work well for users who skipped onboarding, through good empty states.
 
-Checklist:
+## Paywall
 
-- Correct keyboard type and autocomplete per field.
-- Return key moves to next field or submits at the right time.
-- Submit disabled state explains what is missing.
-- Errors are field-specific when possible.
-- No entered data is lost on navigation or retry.
-
-## Onboarding Screen or Flow
-
-Use onboarding only when it reduces future confusion or collects necessary setup. Do not block users with marketing slides when task-first entry works.
-
-Alternatives to generic centered slides:
-
-- Task-first: start with the core action, explain while doing.
-- Progressive permission: ask for permissions at the moment of value.
-- Single immersive setup: one screen that sets goal, preference, or account type.
-- Sample-data preview: show a realistic finished state, then let users personalize.
-- Guided checklist: for complex tools where setup is genuinely multi-step.
-
-Rules:
-
-- Never ask for notification/location/health/photo permissions before explaining user value.
-- Avoid more than 3 screens unless onboarding is the product.
-- Let users skip nonessential education.
-- Keep primary CTA concrete: `Set running goal`, `Import contacts`, `Start trial`.
-- Design empty states so skipped onboarding still works.
-
-## Dashboard or Home Screen
-
-Use for repeated status checks, operational apps, finance, health, productivity.
-
-Structure:
-
-- Most important status or next action first.
-- Secondary modules ordered by frequency and urgency.
-- No equal-weight grid of unrelated cards.
-- Alerts interrupt only when action is needed.
-- Personalization should improve speed, not create mystery.
-
-Checklist:
-
-- User can identify what changed since last visit.
-- Critical state is not hidden below decorative content.
-- Metrics have labels, units, and trend context.
-- Empty modules collapse or explain setup.
+- Show what the user gets in concrete terms, the price per period, trial terms with the end date, and what the free tier keeps.
+- The close or "continue free" control is visible from the first frame.
+- Plans can be compared directly, and Restore purchases is easy to find. See `trust-ethics.md` for patterns to never use.
 
 ## Screen Verification
 
-- Screenshot at small and large phone widths.
-- Large text enabled.
-- Dark mode.
-- Empty/loading/error states.
-- Keyboard open for form screens.
-- Back/dismiss behavior.
-- Screen reader focus order for primary flow.
+- Smallest and largest phone widths, plus tablet if supported.
+- The largest text size and dark mode.
+- Every state: empty, loading, error, offline, permission denied.
+- Keyboard open on input screens.
+- Back and dismiss behavior.
+- Screen reader order through the primary task.
