@@ -1,6 +1,6 @@
 # Análisis del ecosistema de skills de diseño (noviembre 2026)
 
-Investigación para la versión 1.0 de `mobile-design`. Cubre los pasos 1–3 del plan: exploración, extracción de patrones y curación. El paso 4 (aplicación en la skill) depende de la aprobación de la sección 6.
+Investigación para la versión 1.0 de `mobile-design`. Cubre los pasos 1–3 del plan: exploración, extracción de patrones y curación. La sección 6 recoge la propuesta del paso 4, que fue aprobada y está aplicada en la v1.0.0 (con modos dentro de una única skill y `DESIGN.md` opcional; ver `CHANGELOG.md`).
 
 **Decisión de alcance tomada por el propietario:** la skill pasa a ser **puramente de diseño (UX/UI) y agnóstica de stack**. iOS y Android se mantienen como *plataformas de diseño* (HIG y Material son lenguajes de diseño, no herramientas); React Native, Expo, SwiftUI, Compose y cualquier librería salen del contenido.
 

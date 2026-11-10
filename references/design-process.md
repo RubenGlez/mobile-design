@@ -1,183 +1,158 @@
 # Design Process
 
-Use this file first on every task. Its job is to prevent default mobile UI and force the design to follow the user, platform, and product context.
+Use this for any design task. It turns the brief into decisions that follow the user, the context, the product, and the platform.
 
 ## Core Frame
 
-Mobile is not a small desktop. It is personal, interrupted, thumb-driven, variable in network quality, and constrained by system UI, keyboards, sensors, and accessibility settings.
+Mobile is not a small desktop. It is personal, interrupted, thumb-driven, glanced at in motion, and constrained by system UI, keyboards, connectivity, and accessibility settings.
 
 Before designing, identify:
 
-- User: ability, familiarity, emotional state, privacy expectations.
-- Context: one-handed use, movement, glare, noise, connectivity, interruption risk.
-- Category: finance, health, fitness, social, commerce, productivity, media, utility, education, creative.
-- Platform: iOS, Android, cross-platform, tablet/foldable, or web-to-mobile.
-- Task success: the concrete outcome the user is trying to complete.
-- Constraints: existing brand, codebase patterns, installed packages, performance budget, app store requirements.
+- **User**: familiarity, ability, emotional state, privacy expectations, and stage (first run, returning, expert).
+- **Context**: one-handed use, movement, glare, noise, connectivity, interruption.
+- **Category**: finance, health, fitness, social, commerce, productivity, media, utility, education, creative.
+- **Platforms**: iOS, Android, both, tablet or foldable, or a mobile web app that must feel native.
+- **Task success**: the concrete outcome the user came for.
+- **Constraints**: existing brand and design system, `DESIGN.md`, store requirements, supported sizes and locales.
 
-## Design Read
+Three questions anchor everything: what is the user trying to accomplish, how should this moment make them feel, and what is the one thing they should notice first?
 
-State one sentence before code or critique:
+## Design Read and Thesis
 
-`Reading this as: <category> for <audience/context>, with a <visual direction> interface, targeting <platform>.`
+State one line before designing or critiquing:
 
-Examples:
+`Reading this as: <category> for <audience in context>, with a <direction> interface, on <platforms>.`
 
-- `Reading this as: a banking flow for anxious first-time investors, with a calm/trustworthy interface, targeting iOS and Android.`
-- `Reading this as: a run-tracking app for outdoor use, with a bold high-contrast interface, targeting Android-first.`
-- `Reading this as: a premium recipe app for home cooks, with a warm editorial interface, targeting iOS-first.`
+- `Reading this as: a transfer flow for anxious first-time investors, with a calm, exacting interface, on iOS and Android.`
+- `Reading this as: a run tracker glanced at mid-stride outdoors, with a bold high-contrast interface, Android-first.`
 
-## Ask vs Decide
+Then the thesis: the screen's single job, and the most characteristic thing about it. If you cannot name both, the design has no center yet.
 
-Ask one question only when the answer materially changes the implementation and cannot be inferred safely. Good questions are narrow:
+## Ask Once, or Infer
 
-- `Is this screen iOS-only, Android-only, or cross-platform?`
-- `Should I preserve the existing brand palette or propose a new one?`
-- `Is this Expo managed or a bare/native workflow?`
+Ask only when the answer changes the design and cannot be inferred safely: target platform, an existing brand or system to keep, real content that must appear, an accessibility or regulatory constraint. Ask in a single message of at most three questions, and assert the likely answer in each:
 
-Decide when the risk is low and the local codebase provides a pattern:
+`I'm reading this as iOS-first with your current teal brand. Should Android ship at the same time, or later?`
 
-- Use existing token names and component primitives.
-- Match the repo's navigation library.
-- Use the installed icon and animation libraries.
-- Preserve existing radius, spacing, and typography unless the task is a redesign.
+Otherwise decide, then state the inferences in one line at the top of the response. When the project shows a pattern (tokens, components, navigation model, icon family), follow it unless the task is a redesign.
 
-## Category Heuristics
+## Material Inventory
 
-These are starting points, not rules.
+Before composing, list what the design can actually show:
 
-| Category | Design posture | Watch for |
+- **Real**: names, numbers, prices, dates, places, copy, and assets the brief or product provides.
+- **Pictures**: product UI, user content, photography, illustration. Note where each comes from.
+- **Absent**: proof that does not exist yet (reviews, metrics, logos, testimonials). Never invent it. Leave a labeled slot, or design without it.
+
+Content drives structure. A screen that has photographs leads with them. A screen about numbers leads with the number that matters, in context.
+
+## Signature
+
+Every product has one object it is known by: the ledger, the route map, the queue, the streak, the score, the recipe step, the waveform. That object is the signature. Show it at its best, early and large, made from the product's own material. A greeting above four stat cards is not a signature.
+
+One signature per screen, with everything around it quiet. In utility apps the signature can be small and still be a real choice: a precise number treatment, a distinctive progress shape, a characteristic transition.
+
+## Plan Before Producing
+
+Write a compact plan before any detailed design:
+
+- **Structure**: navigation placement, content order, the primary action and where the thumb reaches it. For layout options, sketch ASCII wireframes at compact width (and at regular width when tablets are supported).
+- **System**: 4–6 named color roles with light and dark values and contrast figures; type roles and scale; spacing base; radius scale; elevation levels. If a system exists, list only the changes.
+- **Signature**: what it is and why it belongs to this product.
+- **Motion**: the one orchestrated moment, if the context supports it, and the feedback behaviors.
+- **States**: the states this screen needs (`states-edge-cases.md`).
+
+**Mirror test.** Would a neighboring product in the same category get this exact plan? Would you have produced it for a similar brief about a different product? If yes, it is a default: change one decision (structure, palette, type voice, or signature), and say what changed and why. If the plan is already specific, say so and keep it.
+
+Check the plan against the platform. Navigation and controls still use familiar system patterns.
+
+## Category Posture
+
+Starting points, not rules.
+
+| Category | Posture | Watch for |
 | --- | --- | --- |
-| Finance / banking | Calm, structured, explicit feedback | Overplayful motion, hidden risk, weak trust cues |
-| Health / wellness | Supportive, readable, reassuring | Shame language, cold clinical styling, inaccessible text |
-| Fitness / sport | High contrast, fast scanning, strong hierarchy | Low outdoor contrast, tiny controls during movement |
-| Social / community | Expressive, reactive, identity-rich | Sterile layout, unclear privacy and moderation states |
-| Commerce / luxury | Image-led, editorial, decisive CTAs | Cluttered grids, weak product inspection, fake imagery |
-| Productivity / tools | Efficient, dense, predictable | Decorative motion, excessive cards, low keyboard support |
-| Media / entertainment | Immersive, content-first | Heavy chrome, generic thumbnails, poor loading states |
-| Kids / education | Clear, forgiving, playful | Tiny controls, punitive errors, unbounded stimulation |
+| Finance / banking | Calm, exact, explicit feedback | Playful motion near money, hidden risk, vague status |
+| Health / wellness | Supportive, readable, reassuring | Shame language, alarming color without action, small text |
+| Fitness / sport | High contrast, glanceable, decisive | Low outdoor contrast, tiny controls in motion |
+| Social / community | Expressive, reactive, identity-rich | Unclear audience and privacy state, sterile layouts |
+| Commerce | Image-led, confident CTAs, transparent cost | Cluttered grids, weak product inspection, late fees |
+| Productivity / tools | Efficient, dense, predictable | Decorative motion, card mosaics, slow repeated paths |
+| Media / entertainment | Immersive, content-first | Heavy chrome, generic thumbnails, poor loading |
+| Kids / education | Clear, forgiving, playful | Tiny targets, punitive errors, unbounded stimulation |
 
-## Trust, Emotion, and Recovery
+### Read Cascade
 
-Choose an intended feeling only when it helps the user finish the task: confidence before a payment, control during a permission request, relief after recovery, or momentum when a setup step completes. Earn that feeling with clarity, feedback, and a visible next action, not celebration layered over uncertainty.
+Turn the read into first choices, then adapt to the product:
 
-For high-value moments, define the trigger, the observable state change, the feedback, and the recovery or next step.
+| Read | Type | Color | Radius | Motion | Layout |
+| --- | --- | --- | --- | --- | --- |
+| Finance, professional | System sans, strong numeric hierarchy, tabular figures | Cool neutrals, restrained accent, unambiguous status colors | 10–16 | Low, structural | Lists, summaries, explicit confirmation |
+| Health, consumer | System or friendly rounded sans | Warm neutrals, soft accent | 16–24 | Gentle | Guided steps, supportive empty and error states |
+| Fitness, outdoor | Bold sans, very large metrics | High contrast, glare-safe accent | 12–20 | Snappy | Large controls, bottom actions, glanceable stats |
+| Social | Expressive but readable | Warmer palette, identity colors used sparingly | 20+ | Reactive | Content- and avatar-led, visible privacy state |
+| Commerce / editorial | Display face for moments, readable body | Monochrome or rich brand color | 12–20 | Smooth | Image-led detail, short checkout path |
+| Productivity | System sans, compact scale (ratio about 1.125–1.2) | Neutral roles, functional accent | 4–12 | Minimal | Dense lists, toolbars, separators over cards |
+| Media | Content-led type, bold titles | Dark, media-first, scrims | 8–16 | Cinematic but restrained | Full-bleed media, clear playback controls |
+| Kids / education | Friendly rounded type | Saturated but controlled | 20+ | Playful, forgiving | Large targets, clear progress, positive recovery |
 
-| Moment | Design for | Avoid |
-| --- | --- | --- |
-| Finance confirmation | Confidence and control | Ambiguous labels, hidden fees, celebratory motion before completion |
-| Health result or reminder | Reassurance and agency | Alarming color/copy without a clear action or escalation path |
-| Permission request | Informed consent | System prompt without prior value or a usable decline path |
-| Checkout failure | Recovery | Dead ends, lost cart data, blame-oriented copy |
-| Onboarding completion | Momentum | Blocking confetti or a vague success state with no next action |
-| Social safety/privacy action | Safety and ownership | Invisible audience, moderation, or undo state |
+Modifiers: *premium* means fewer colors and more precise spacing; *playful* means rounder shapes and springier response with predictable navigation; *calm* means softer contrast that still passes AA; *bold* means larger type and decisive CTAs; *native* means platform type, icons, transitions, and semantic colors.
 
-Do not manufacture urgency, use variable rewards, or conceal meaningful consequences to create engagement. In risky or irreversible flows, lower visual variance and motion rather than trying to make the moment feel exciting.
+## Emotional Design
 
-## Design Read Cascade
+Choose a feeling only when it helps the user finish: confidence before a payment, control during a permission request, relief after recovery, momentum after setup. Earn it with clarity and feedback, not with celebration layered over uncertainty.
 
-Turn the design read into concrete choices. Use this as a starting table, then adapt to the local app.
+- **Felt state first.** Name what the person is feeling at this moment (waiting anxiously, recovering from an error, finishing a streak). Find a physical analogue (a soft landing, a held breath, a door closing gently), then express it through one layer: easing, delay, copy tone, color temperature, or spacing.
+- **Peak and end.** People remember the most intense moment and the last one. Pick one peak in the core flow (a milestone, a personal insight, a task completed after effort) and design it deliberately. Then design the ending: a summary, the next step, a reason to return. Keep everything else efficient.
+- **Information weight.** Heavy news arrives calmly and with a next step. Good news can be immediate.
+- **Ownership.** When the system fails, the copy owns it; never make the user feel responsible for it.
+- **Warmth is active.** Removing friction is not the same as warmth. Acknowledge small wins briefly, and match the tone to the stakes.
 
-| Read | Type | Color | Radius | Motion | Iconography | Layout |
-| --- | --- | --- | --- | --- | --- | --- |
-| Fintech, professional, iOS | SF Pro, strong numeric hierarchy | cool neutrals, restrained accent, clear status colors | soft 12-16 | low, structural | SF Symbols | lists, summaries, explicit confirmations |
-| Health/wellness, consumer | system or friendly rounded sans | warm neutrals, sage/blue/soft accent | soft/round 16-24 | gentle | rounded platform icons | guided cards, supportive empty/error states |
-| Fitness, outdoor | bold system/custom sans, large metrics | high contrast, dark/light outdoor-safe accent | medium 12-20 | snappy | bold simple icons | large controls, bottom actions, glanceable stats |
-| Social/community | expressive but readable | warmer palette, identity colors with restraint | round 20+ | reactive | custom or platform icon set (SF/Material) | avatar/content-led feed, visible privacy states |
-| Commerce/luxury | editorial display plus readable body | monochrome or rich brand accent | soft 12-20 | smooth | minimal line icons | image-led detail, strong checkout path |
-| Productivity/tool | system sans, compact hierarchy | neutral roles, functional accent | sharp/soft 4-12 | minimal | platform or utilitarian icons | dense lists, toolbars, separators over cards |
-| Media/entertainment | content-led type, bold titles | dark/media-first, scrims | medium | cinematic but restrained | platform/media icons | full-bleed media, playback controls, carousels only when useful |
-| Kids/education | friendly rounded type | saturated but controlled | round 20+ | playful, forgiving | chunky/custom | large targets, clear progress, positive recovery |
+High-stakes and trust moments are covered in `trust-ethics.md`.
 
-Vibe modifiers:
+## Mobile Realities
 
-- Premium: reduce color count, increase spacing precision, use fewer but better materials.
-- Playful: increase radius and spring response, but keep navigation predictable.
-- Calm: lower contrast harshness without failing accessibility; slow noncritical motion.
-- Bold: larger type, stronger contrast, more decisive CTAs.
-- Editorial: imagery and type carry personality; avoid overdecorated components.
-- Native: prefer platform typography, icons, transitions, and semantic colors.
-
-## User-Centered Mobile Realities
-
-- Primary actions usually belong in the lower half, especially for repeated one-handed use.
-- Destructive actions should be protected from accidental thumb-zone activation.
-- Users scan first; strong headings and visible state transitions matter.
-- The keyboard can cover a large portion of the screen; forms need scroll and focus management.
-- Offline, slow network, denied permissions, and interrupted sessions need designed states.
-- Accessibility settings are normal user preferences, not edge cases.
-
-## Usability Shortcuts
-
-Use the five-second test: users should quickly understand where they are, what the screen is for, what matters most, what they can tap next, and whether anything needs attention.
-
-If a screen feels weak, repair in this order: content, layout grouping, spacing, type, contrast, color, depth, motion. Do not use gradients, shadows, or animation to compensate for unclear hierarchy.
-
-Prefer conventional patterns for risky or familiar flows: back behavior, forms, checkout, permissions, destructive actions, privacy, and settings. Spend novelty on brand expression, content presentation, empty states, and non-critical delight.
-
-Make copy name outcomes: `Pay $42.18`, `Save draft`, `Retry upload`, `Use current location`, `Delete workout`.
+- Repeated primary actions belong in the lower half of the screen. Keep destructive actions out of accidental thumb paths.
+- Users scan first. Strong headings, clear grouping, and visible state changes matter more than decoration.
+- The keyboard covers about half the screen. Forms need visible focus, scrolling, and a reachable submit action.
+- Offline, slow networks, declined permissions, and interrupted sessions are normal states. Design them.
+- Accessibility settings are everyday preferences, not edge cases.
+- Prefer conventional patterns for risky or familiar flows: back, forms, checkout, permissions, destructive actions, settings. Spend novelty on content, brand moments, empty states, and the signature.
+- If a screen feels weak, repair in this order: content, grouping, spacing, type, contrast, color, depth, motion. Never use effects to compensate for unclear hierarchy.
 
 ## Dials
 
-This section is the canonical definition of the design dials. `SKILL.md` and `references/motion-haptics.md` carry short summaries that mirror it; edit the semantics here and keep those in sync.
-
-Set dials after the design read:
+Set the dials after the design read, and let them shape density, motion, and visual risk.
 
 | Dial | Low | High |
 | --- | --- | --- |
-| `DESIGN_VARIANCE` | platform-native, expected | distinctive, editorial, experimental |
-| `MOTION_INTENSITY` | instant state changes | choreographed transitions and physical feedback |
-| `VISUAL_DENSITY` | spacious and guided | compact, operational, repeat-use |
+| `DESIGN_VARIANCE` | Platform-native, expected | Distinctive, editorial, experimental |
+| `MOTION_INTENSITY` | Instant state changes | Choreographed, physical transitions |
+| `VISUAL_DENSITY` | Spacious and guided | Compact, operational, repeat-use |
 
-Dial guidance:
+| Value | `DESIGN_VARIANCE` | `MOTION_INTENSITY` | `VISUAL_DENSITY` |
+| --- | --- | --- | --- |
+| 1–3 | System type, standard navigation and controls, minimal custom surfaces | System transitions and press feedback only | Large spacing, few choices per screen, one guided action |
+| 4–6 | Custom tokens, committed brand color, one distinctive detail | Continuity on sheets and lists, responsive press feedback | Standard app density, comfortable lists and forms |
+| 7–8 | Custom display type or imagery, varied compositions, strong shape language | Shared-element moments, a richer peak moment | Compact rows, more data per screen, separators over cards |
+| 9–10 | Experimental structure or interaction, only for briefs that invite it | Choreographed system; heavier verification burden | Expert, cockpit-like; strong grouping and careful accessibility checks |
 
-- Safety-critical, financial, health, auth, permissions: lower variance and motion.
-- Repeated operational work: higher density, lower decorative motion.
-- Consumer discovery, fitness, social, media: more expression if hierarchy stays clear.
-- Premium/minimal: low density does not mean empty; precision in spacing, type, and materials carries the design.
+Money, health, auth, permissions, and safety lower variance and motion. Repeated operational work raises density and lowers decorative motion. Low density is not emptiness: precision carries it. High variance must never break navigation, controls, or small-screen stability.
 
-### Dial Translation
+## DESIGN.md
 
-`DESIGN_VARIANCE`
+`DESIGN.md` is an optional file at the project root that keeps decisions across tasks. If it exists, read it first; it overrides this skill's defaults, but not the Floor. Offer to write one only when a task made durable decisions. Keep it short:
 
-| Value | Changes in output |
-| --- | --- |
-| 1-3 | Strict platform defaults, system font, standard navigation, minimal custom surfaces |
-| 4-6 | Custom tokens, clear brand accent, modest layout variation, one distinctive detail |
-| 7-8 | Custom typography or imagery, varied compositions, stronger material/shape choices |
-| 9-10 | Experimental structure or interaction; only for creative briefs with explicit tolerance |
-
-`MOTION_INTENSITY`
-
-| Value | Changes in output |
-| --- | --- |
-| 1-3 | Native transitions, press opacity/scale, no decorative motion |
-| 4-6 | Spring press states, sheet/list continuity, restrained skeleton transitions |
-| 7-8 | Shared-element moments, parallax, richer success/empty-state animation |
-| 9-10 | Choreographed motion system; require reduced-motion fallback and profiling |
-
-`VISUAL_DENSITY`
-
-| Value | Changes in output |
-| --- | --- |
-| 1-3 | Large whitespace, few choices per screen, strong guided CTA |
-| 4-6 | Standard app density, lists/forms with comfortable spacing |
-| 7-8 | Compact operational rows, more data per screen, separators over large cards |
-| 9-10 | Expert/cockpit UI; dense controls, strong grouping, careful accessibility testing |
-
-Implementation implications:
-
-- High variance should not break small-screen stability.
-- High motion should increase verification burden.
-- High density requires stronger typography, spacing tokens, and focus order.
-- Low density still needs real content and state handling.
-
-## Output Expectations
-
-When generating or revising UI:
-
-- Explain decisions through the user and platform, not taste alone.
-- Use concrete content and data. Avoid placeholder people, fake round numbers, and generic copy.
-- Keep visual systems internally consistent: radius, spacing, type scale, color roles, icon family.
-- Include all states needed for the workflow.
-- Verify or clearly state what was not verified.
+```markdown
+# Design
+Read: <design read>
+Platforms: <targets, sizes, locales>
+Dials: variance <n> · motion <n> · density <n>
+Signature: <the object the app is known by, and how it is shown>
+Color roles: <role: light / dark, contrast>
+Type roles: <role: size/leading/weight>
+Spacing / radius / elevation: <scales>
+Motion: <personality, durations or spring feel, reduced-motion approach>
+Voice: <three adjectives, plus words used and avoided>
+House rules: <reflexes deliberately kept, with reasons>
+```

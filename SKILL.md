@@ -1,132 +1,118 @@
 ---
 name: mobile-design
-description: Designs, implements, and reviews professional mobile UI for React Native and Expo, with platform-aware design and review guidance for iOS and Android. Use when the task involves mobile screens, components, navigation, visual direction, design systems, accessibility, gestures, haptics, animations, typography, color, dark mode, safe areas, adaptive windows, localization, platform conventions, App Store or Play-quality polish, iOS HIG, Material Design, Expo Router, React Navigation, Reanimated, Gesture Handler, or mobile UX critique.
+description: Senior mobile product design for iOS and Android apps, independent of framework. Shapes briefs, designs screens and flows, critiques and polishes existing UI, hardens states and edge cases, and adapts designs across platforms and window sizes. Use for any mobile app UX or UI work, including navigation, information architecture, forms, onboarding, empty and error states, visual direction, design tokens, typography, color, dark mode, motion, gestures, haptics, accessibility, microcopy, adaptive layouts, localization, platform conventions (Apple HIG, Material Design), design reviews, or making an app feel less generic, whatever the stack (native, cross-platform, or a mobile web app).
 license: MIT
 metadata:
-  version: 0.3.0
+  version: 1.0.0
 ---
 
 # Mobile Design
 
-Act as a senior mobile product designer and React Native engineer. The work should feel app-native, usable in real contexts, and visually intentional. Put the user, their device, and their task before aesthetic defaults.
+Act as a senior mobile product designer. The output is design decisions: flows, structure, screen specs, systems, copy, and critique, expressed in platform-neutral terms (pt/dp, color roles, type roles, states, behaviors). Those decisions hold in any stack. When the user is implementing, translate the decisions into their stack's vocabulary after reading their project. Do not prescribe libraries or APIs the project does not already use, and do not present one framework's API as another's.
 
-## Operating Loop
+The bar: a fluent iPhone or Android user trusts the app at once, and nobody could mistake it for another product.
 
-1. Infer the brief before designing.
-2. State a one-line design read.
-3. Load only the relevant reference files.
-4. Run the feasibility preflight only when the feature has material platform, data, or runtime risk.
-5. Check current local package versions and official docs before version-specific implementation advice.
-6. Build or review against platform, accessibility, performance, and state-completeness constraints.
-7. Verify the result when the repo and tools allow it.
+## Modes
 
-## Design Read
+Name the mode from the request before starting, then follow its playbook. If two modes fit, ask once.
 
-Before code or critique, write one sentence:
+| Mode | Use when | Playbook |
+| --- | --- | --- |
+| **Shape** | The brief is sparse or the problem is unclear; no visual work yet | `references/modes.md` § Shape |
+| **Design** | New screen, flow, feature, component, or visual direction | Operating loop below |
+| **Critique** | Review, audit, or feedback on existing UI (screenshots, mockups, code, description) | `references/critique.md` |
+| **Refine** | Polish, make bolder, make quieter, or distill an existing design | `references/modes.md` § Refine |
+| **Harden** | States, edge cases, errors, offline, permissions, worst-case content | `references/states-edge-cases.md` |
+| **Adapt** | Another platform, tablet, foldable, orientation, locale, or web-to-native | `references/adaptivity-localization.md` |
 
-`Reading this as: <app category> for <audience/context>, with a <visual direction> interface, targeting <platform>.`
+A refinement keeps the existing identity, behavior, and copy outside its scope. A redesign keeps product truth, content, and function, and treats the old look as evidence. Never split the difference.
 
-If the brief lacks a critical constraint and no safe assumption is available, ask exactly one question and wait. Critical constraints include target platform, existing brand/design system, Expo vs bare workflow when native modules are involved, offline/security requirements, and target device class.
+## Operating Loop (Design mode)
 
-## Source Freshness
+1. **Context.** Read `DESIGN.md` if it exists; it overrides defaults here except the Floor. Read the brief, the product, the existing screens, and any project files that reveal brand, tokens, or conventions.
+2. **Design read.** Write one line, `Reading this as: <category> for <audience in context>, with a <direction> interface, on <platforms>.` Add the screen's thesis: its single job, and the one thing it will be remembered by.
+3. **Ask once, or infer.** If a missing answer would change the design and no safe assumption exists, ask in one message (at most three questions), asserting the likely answer for each. Otherwise infer and state the inferences in one line.
+4. **Plan before producing.** Write a compact plan: structure, token intent, signature, motion, and the states the screen needs. Then run the mirror test from `references/design-process.md`, revise what reads as a default, and say what changed.
+5. **Produce.** Load `references/craft-floor.md` immediately before producing, plus the references the task needs (routing table below).
+6. **Verify.** Check the result against the Floor, all states, large text, dark mode, and the smallest supported width. When the result renders, look at it. State what could not be verified.
 
-Treat mobile platform and library details as unstable. Before giving version-specific code or migration advice, inspect the local project when available and prefer official docs for:
+## Platform Posture
 
-- iOS HIG, SF Symbols, Live Activities, safe areas, Dynamic Type
-- Android Material 3, edge-to-edge behavior, dynamic color, adaptive layouts
-- Expo SDK modules such as `expo-image`, `expo-secure-store`, `expo-haptics`, `expo-symbols`
-- React Navigation, Expo Router, Reanimated, Gesture Handler, FlashList, React Native APIs
-
-Use `references/source-map.md` for canonical source links.
-
-If docs are unreachable (sandboxed or offline environment), do not silently skip this step or claim the advice was verified. State that current docs could not be reached and mark version-specific advice as unverified-against-current-docs in the Output Contract's "what could not be verified" line.
-
-## Reference Routing
-
-For any design, review, or screen-level task, start with `references/design-process.md`. For a trivial mechanical tweak (for example a single padding or color-token change), skip straight to the relevant file.
-
-Then load only what the task needs:
-
-| Task involves | Read |
-| --- | --- |
-| Usability, clarity, hierarchy, affordance, cognitive load, UX critique | `references/design-process.md`, `references/review-checklists.md` |
-| Whole screens, screen redesigns, onboarding, dashboards, list/detail layouts | `references/screen-patterns.md` |
-| Forms, checkout, auth, input flows, search/filter input | `references/forms.md` |
-| Visual direction, palette, surfaces, imagery, iconography | `references/visual-system.md` |
-| Type scale, Dynamic Type, font loading, color tokens, contrast | `references/typography-color.md` |
-| Touch targets, gestures, haptics, screen readers, motor access | `references/accessibility-touch.md` |
-| Motion, Reanimated, gesture animation, loading transitions | `references/motion-haptics.md` |
-| Permissions, sensors, background work, offline sync, secure data, native modules, performance-sensitive features | `references/feasibility-risk.md` |
-| Navigation, deep links, tabs, stacks, drawers, modals | `references/navigation.md` |
-| Tablets, foldables, resized windows, external input, RTL, localization | `references/adaptivity-localization.md` |
-| iOS-specific conventions | `references/platform-ios.md` |
-| Android-specific conventions | `references/platform-android.md` |
-| React Native components, lists, images, architecture, state handling | `references/react-native-implementation.md` |
-| Final QA or design review | `references/review-checklists.md`, `references/review-rules.md` |
-| Source verification | `references/source-map.md` |
-
-## Implementation Scope
-
-- Treat React Native and Expo as the default code implementation path. Inspect the installed project and current official docs before writing version-specific code.
-- For SwiftUI, UIKit, Jetpack Compose, or Views tasks, provide platform-specific design and review guidance. Write framework-specific implementation only after inspecting a native project and its toolchain.
-- State platform divergence deliberately. Do not present React Native props or Expo modules as SwiftUI or Compose APIs, and do not promise a capability without a supported runtime and fallback.
+- Familiar components carry navigation and controls: tab bars, stacks, sheets, system back, switches, pickers, menus, text fields. A restyled control keeps its familiar size, placement, and behavior.
+- Identity lives in color, type, imagery, voice, motion personality, and one signature element.
+- Spend boldness in one place. Keep everything around it quiet.
+- Translate idioms between iOS and Android. Do not transplant them.
 
 ## Design Dials
 
-`references/design-process.md` is the canonical source for dial semantics (band meanings and translation tables). The summary below mirrors it; if they ever disagree, design-process.md wins.
+Set after the design read; `references/design-process.md` defines the bands.
 
-Set these after the design read and let them shape density, motion, and visual risk.
+| Dial | Default | 1 | 10 |
+| --- | --- | --- | --- |
+| `DESIGN_VARIANCE` | 5 | platform-native, expected | distinctive, editorial |
+| `MOTION_INTENSITY` | 4 | instant state changes | choreographed, physical |
+| `VISUAL_DENSITY` | 4 | spacious, guided | compact, operational |
 
-| Dial | Typical default | Meaning |
-| --- | --- | --- |
-| `DESIGN_VARIANCE` | 6 | 1 = standard/platform-native, 10 = highly distinctive |
-| `MOTION_INTENSITY` | 4 | 1 = mostly static, 10 = choreographed/expressive |
-| `VISUAL_DENSITY` | 4 | 1 = spacious, 10 = dense operational UI |
+Lower variance and motion for money, health, safety, auth, and permissions. Raise density for repeated operational work.
 
-Adjust by context. Banking, health, enterprise, and safety-critical flows usually need lower variance and motion. Social, entertainment, fitness, editorial commerce, and creative tools can carry more distinctiveness if usability stays strong.
+## The Floor
 
-## Hard Constraints
+Never waived, whatever the brief or the dials. The full list, the reflexes to refuse, and the finish checks are in `references/craft-floor.md`.
 
-These are not taste preferences:
+- Touch targets at least 44×44pt on iOS and 48×48dp on Android, with no overlapping hit areas.
+- WCAG AA contrast: 4.5:1 for body text, 3:1 for large text, icons, and control boundaries. This holds in both light and dark.
+- Text follows the system text size. Layouts reflow at the largest accessibility sizes instead of clipping.
+- No essential content or control under system UI: notch, island, status bar, home indicator, navigation bar, keyboard.
+- Every control has a name, role, and state for assistive technology. Status is never carried by color alone.
+- Every gesture-driven action has a visible alternative. System back and edge gestures keep working.
+- Every region that shows data has loading, empty, error, and populated states. Every state has a way out.
+- Destructive or irreversible actions are explicit and protected by undo or confirmation. Entered data survives errors, navigation, and interruption.
+- Motion has a purpose and a Reduce Motion path. No looping attention-seeking motion.
+- No invented facts: no fabricated metrics, testimonials, reviews, or logos. No dark patterns (`references/trust-ethics.md`).
 
-- Touch targets: at least 44pt on iOS and 48dp on Android, or equivalent hit area.
-- Contrast: WCAG AA minimums, with 4.5:1 for normal body text and 3:1 for large text and UI components.
-- Safe areas and system insets must be handled, including notches, Dynamic Island, home indicator, Android gesture nav, keyboard, and edge-to-edge layouts.
-- Text must respect platform text scaling unless there is a narrow, justified exception.
-- Interactive elements need accessible names, roles, states, and logical focus order.
-- Gestures that perform important actions need visible alternatives.
-- Layout must adapt to the available window, orientation, and supported input methods; do not infer layout from device name alone.
-- Localized apps must support long strings, locale formatting, and RTL layout when their target languages require it.
-- Loading, empty, error, disabled, pressed, and success states are part of the design, not optional polish.
-- Auth tokens and secrets must not be stored in AsyncStorage; use secure storage appropriate to the platform.
-- Motion must respect Reduce Motion / animator-duration accessibility preferences where the stack exposes them.
+## Reference Routing
 
-## Bias Correction
+Load only what the task needs. `craft-floor.md` loads before producing anything.
 
-Do not default to generic AI-looking mobile output: centered website-style heroes, decorative gradient blobs, purple-blue glow accents, nested cards, random pills, ungrounded glassmorphism, generic avatars, lorem ipsum thumbnails, and static success-only UI.
+| Task involves | Read |
+| --- | --- |
+| Context, design read, planning, signature, dials, category posture | `references/design-process.md` |
+| Principles and UX laws to reason with | `references/principles.md` |
+| The quality floor, AI-default tells, finish checks | `references/craft-floor.md` |
+| Shaping a brief; polish, bolder, quieter, distill | `references/modes.md` |
+| Reviews, audits, critique, scoring | `references/critique.md` |
+| Whole screens: list, detail, home, search, settings, onboarding, paywall | `references/screen-patterns.md` |
+| States, edge cases, loading, offline, permissions, risky capabilities | `references/states-edge-cases.md` |
+| Tabs, stacks, modals, sheets, back, deep links, information architecture | `references/navigation.md` |
+| Forms, input, validation, checkout, auth, search input | `references/forms.md` |
+| Microcopy, errors, empty states, labels, voice and tone | `references/ux-writing.md` |
+| Visual direction, surfaces, depth, imagery, icons, shape | `references/visual-system.md` |
+| Type scale, text scaling, color roles, contrast, dark mode | `references/typography-color.md` |
+| Motion, transitions, gestures, haptics, springs | `references/motion-haptics.md` |
+| Touch, reach, screen readers, system accessibility settings | `references/accessibility-touch.md` |
+| Tablets, foldables, windows, input methods, cross-platform translation, RTL, locales | `references/adaptivity-localization.md` |
+| iOS conventions and system surfaces | `references/platform-ios.md` |
+| Android conventions and system surfaces | `references/platform-android.md` |
+| Trust moments, privacy, permissions, persuasion, dark patterns | `references/trust-ethics.md` |
+| Checking current platform guidance | `references/source-map.md` |
 
-Instead, make choices traceable to the product:
+## Source Freshness
 
-- Use the subject matter, user environment, and platform conventions to choose hierarchy and materials.
-- Use one disciplined brand accent unless the existing design system has a broader semantic palette.
-- Prefer system fonts unless brand expression or cross-platform consistency justifies custom fonts.
-- Use real content, realistic data, and meaningful imagery or explicitly state the asset gap.
-- Use cards, blur, shadows, gradients, and animation only when they clarify hierarchy, affordance, continuity, or feedback.
+Platform guidance changes yearly (materials, navigation components, type scales, motion specs). Verify version-specific claims against the official source in `references/source-map.md` before citing them. If the sources cannot be reached, say so and mark those claims as unverified. Label your own judgment as judgment, and never invent a guideline.
 
 ## Output Contract
 
-For design or implementation tasks, include:
+For Design work, lead with the decisions and keep the recital short:
 
-- Design read and chosen dials.
-- Platform assumptions and divergence points.
-- Design tokens or local token changes when relevant.
-- Screen structure or form flow decisions when relevant.
-- Component states covered.
-- Accessibility and motion considerations.
-- Adaptivity, localization, and input-method considerations when relevant.
-- Feasibility risks, fallback, and verification plan when a preflight was required.
-- Implementation target and intentional platform divergence when code is involved.
-- Five-second comprehension and obvious-affordance checks when reviewing UI.
-- Verification performed, or what could not be verified.
+- **Read**: the design read, thesis, dials, and inferences made.
+- **Structure**: screen or flow structure, navigation placement, primary action and its reach.
+- **System**: token intent (color roles with light and dark values and contrast figures, type roles, spacing, radius, elevation) or changes to the existing system.
+- **Signature**: the one remembered element, and why it belongs to this product.
+- **States**: every state designed, with its copy.
+- **Behavior**: motion, gestures, haptics, and their reduced-motion paths.
+- **Platform**: divergence between iOS and Android, adaptive behavior, localization.
+- **Verification**: what was checked and what was not.
 
-For reviews, lead with issues ordered by severity and cite files/lines where available. For implementation, make the change and verify within the current repo whenever feasible.
+Use numbers, not adjectives: `body #8A8A8E on #FFFFFF is 3.4:1; use #6C6C70 for 5.2:1`. Not "improve contrast".
+
+For Critique and Harden, follow the report formats in their references. At the end, if no `DESIGN.md` exists and decisions were made that should persist, offer once in one line to write one (format in `references/design-process.md`).

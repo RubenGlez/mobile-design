@@ -1,143 +1,114 @@
 # Motion and Haptics
 
-Use this for animation, micro-interactions, transitions, Reanimated, Gesture Handler, reduced motion, loading transitions, and tactile feedback.
+Use for transitions, micro-interactions, gestures, springs, loading motion, haptics, and reduced motion. Motion is part of the design from the start. Specify it as behavior (what moves, why, how it responds to the finger, how it settles) so any implementation can match it.
 
-## Motion Purpose
+## Purpose First
 
-Animation should do at least one job:
+Every animation does at least one job. If you can't name it, remove the animation.
 
-- Confirm input.
-- Preserve spatial continuity.
-- Explain hierarchy changes.
-- Reveal progress.
-- Draw attention to a state change.
-- Add brand character without slowing the task.
+- **Feedback**: confirms that an input was received.
+- **Orientation**: shows where something came from or went (continuity between screens and states).
+- **Hierarchy**: explains what changed and what matters now.
+- **Status**: shows progress or waiting.
+- **Character**: expresses the brand at a rare, earned moment.
 
-If an animation cannot be explained through the user or system state, remove it.
+The best motion in a working app goes unnoticed. If people remark on an animation every time they see it, it is too prominent for something they repeat.
 
-## Intensity
+## Frequency Gate
 
-This table mirrors the canonical `MOTION_INTENSITY` definition in `references/design-process.md`; keep the two in sync.
+Before adding or approving motion, ask how often the user triggers it:
 
-| `MOTION_INTENSITY` | Behavior |
+| Frequency | Motion |
 | --- | --- |
-| 1-3 | Native transitions, press states, minimal fades |
-| 4-6 | Spring press feedback, sheet/list transitions, subtle skeletons |
-| 7-8 | Shared element moments, parallax, richer success states |
-| 9-10 | Highly choreographed or experimental, only for briefs that call for it |
+| Rare (first run, milestones, monthly) | Expressive motion is welcome |
+| Occasional (a few times a day) | Subtle and fast |
+| Frequent (dozens to hundreds of times a day) | Instant, or a near-instant change of color or opacity |
+| Keyboard- or shortcut-initiated | None |
 
-Always support reduced motion by disabling nonessential transforms, parallax, and looping animations. Keep essential feedback, but make it immediate or use a simple opacity change.
+Weigh the gate by context. A kids' or creative app can afford more expressive motion than a banking or productivity tool. Match the conventions the app already has, unless they are the problem.
 
-In React Native, check the current preference and subscribe to changes rather than reading it once at app start:
+## Timing and Easing
 
-```tsx
-import { useEffect, useState } from 'react';
-import { AccessibilityInfo } from 'react-native';
+- Feedback on press appears immediately, within about 100ms, on touch-down, not on release.
+- Typical durations: micro-feedback 100–200ms; component transitions (menus, sheets, expanding rows) 200–350ms; screen transitions follow the platform. Larger distances and larger elements take longer; small elements move faster.
+- Entering elements decelerate (ease-out). Exits are quicker and subtler than entries, because the user's attention has already moved on. Avoid linear motion for anything that moves through space.
+- Never start a scale from zero. Begin from about 0.9 or higher, combined with opacity.
+- Anchor motion to its source: menus and popovers grow from the control that opened them, and things leave the way they came.
+- Use one orchestrated moment at most per screen, on first arrival or after a meaningful change. Don't add entrance motion to repeat visits.
 
-function useReducedMotion() {
-  const [enabled, setEnabled] = useState(false);
+## Fluid Interaction
 
-  useEffect(() => {
-    AccessibilityInfo.isReduceMotionEnabled().then(setEnabled);
-    const subscription = AccessibilityInfo.addEventListener('reduceMotionChanged', setEnabled);
-    return () => subscription.remove();
-  }, []);
+These principles separate fluid from merely animated:
 
-  return enabled;
-}
-```
+- **Interruptible.** Any animation can be grabbed, reversed, or redirected mid-flight. Never lock input during a transition. The new motion starts from the element's current on-screen position, never from where it was supposed to end.
+- **Springs over fixed durations** for anything the user touches. Describe a spring by its **damping ratio** (1.0 = no overshoot, below 1.0 = bounce) and its **response** (how quickly it settles, in seconds). These map to any spring implementation.
 
-Use the returned value to remove decorative delays, loops, parallax, and large transforms. Check local Reanimated documentation before choosing its version-specific reduced-motion API.
+| Interaction | Damping | Response |
+| --- | --- | --- |
+| Default UI movement, repositioning | 1.0 | 0.3–0.4 |
+| Sheet or drawer released by a drag | ~0.8–0.9 | 0.3 |
+| A flicked or thrown object | ~0.7–0.8 | 0.3–0.4 |
+| Toggles, menus, dialogs, utility actions | 1.0 | 0.25–0.35 |
 
-## Implementation Choice
+- **Bounce only after momentum.** A slight overshoot is right when the user flicked something. The same element opened by a tap gets no bounce, because no force was applied.
+- **Continuous feedback.** During a drag, the UI follows the finger 1:1 the whole way, keeping the offset from where it was grabbed. Never animate only at the end.
 
-Use the simplest reliable tool:
+## Gestures
 
-- `Pressable` state style for basic press feedback.
-- Reanimated for gesture-driven, interruptible, high-frequency, or physics-based motion.
-- Gesture Handler for complex gestures beyond basic press/tap.
-- Native navigation transitions for screen movement unless custom continuity is important.
-- Platform components or mature libraries for bottom sheets, pull-to-refresh, and swipe actions unless custom behavior is required.
+Every gesture has two phases:
 
-## Performance Rules
-
-Prefer animating:
-
-- `transform`
-- `opacity`
-
-Be cautious with layout properties such as width, height, top, left, margin, padding, and border radius. They may be acceptable for small, measured, non-scroll-critical transitions, but do not use them in high-frequency gestures or large lists without profiling.
-
-Avoid:
-
-- Animations triggered during render.
-- Infinite loops on large lists or many repeated components.
-- JS-thread scroll listeners for continuous effects.
-- Haptic calls inside high-frequency gesture updates.
-- Animating hidden content without updating accessibility visibility.
-
-## Press Feedback
-
-Use `Pressable` state styles for ordinary controls. Use Reanimated when press feedback interacts with gesture state, shared layout, or complex visual elements. Keep feedback fast: opacity/scale changes should appear within roughly 100ms.
-
-## Spring Presets
-
-Treat presets as starting points:
-
-```ts
-export const spring = {
-  snappy: { mass: 1, damping: 20, stiffness: 300 },
-  gentle: { mass: 1, damping: 26, stiffness: 140 },
-  playful: { mass: 1, damping: 12, stiffness: 210 },
-  structural: { mass: 1, damping: 32, stiffness: 380, overshootClamping: true },
-};
-```
-
-Choose by weight:
-
-- Button/icon: snappy.
-- Card/sheet/content: gentle or structural.
-- Celebration/social reaction: playful.
-- Safety-critical confirmation: structural and restrained.
-
-## Loading Motion
-
-Use skeletons when they preserve layout and help users understand what is loading. Use spinners/progress indicators when the content shape is unknown or the wait is short and localized.
-
-Skeleton rules:
-
-- Match final content dimensions.
-- Do not shimmer aggressively.
-- Pause or simplify when reduced motion is enabled.
-- Avoid dozens of independent looping placeholders.
-
-## List Motion
-
-Entry animation is optional. Use it when content appearing needs continuity or polish, not on every list by default.
+1. **Tracking** (finger down): position maps directly to the finger. No easing, no delay. At boundaries, resist progressively (rubber-banding) instead of stopping dead.
+2. **Release** (finger up): physics finishes the motion. The settle animation starts at the finger's release velocity, so there is no seam between dragging and animating.
 
 Rules:
 
-- Cap stagger to the first visible items.
-- Keep delays short.
-- Preserve stable keys.
-- Avoid re-animating items on ordinary parent renders.
+- Choose the destination from where the gesture is heading, not only from where it was released. A flick projects forward to the nearest snap point.
+- Dismiss or commit on distance **or** velocity: past roughly half the travel, or a quick flick over a short distance. Snap back quickly when neither threshold is met.
+- Require a small movement threshold (about 10pt) before committing to a direction, then track 1:1. Recognize competing gestures in parallel and settle on one as soon as intent is clear.
+- Values that depend on the gesture (the dimming behind a sheet, the scale of the page beneath) derive from the gesture's progress, so they stay in sync when the user reverses.
+- Never conflict with system gestures: edge-swipe back, the home indicator, and the notification and control areas.
+- Every gesture-driven action also exists as a visible control.
 
-## Navigation and Shared Transitions
+## Loading Motion
 
-- Let platform navigation do ordinary push/pop and modal movement.
-- Use custom transitions when the content itself logically transforms.
-- Do not make all screens share the same flashy transition.
-- Preserve back gesture and Android back behavior.
+- Skeletons match the final layout. Keep the shimmer slow and subtle, or replace it with a static placeholder under Reduce Motion.
+- Don't let dozens of placeholders loop independently. Use one coordinated, calm treatment.
+- Progress indicators should feel steady. Don't animate fake progress that stalls at 99%.
 
-## Haptic Pairing
+## Haptics
 
-Pair haptics with discrete state changes. Do not fire haptics on passive scrolling, background updates, or every frame of a gesture.
+Haptics are part of the feedback system. They are not decoration.
 
-## Motion QA
+- **Causality**: fire on the actual causal event (the toggle flipping, the item snapping into place, the payment confirming), and match the haptic's character to the physicality of the action.
+- **Harmony**: the visual, the sound, and the haptic land on the same frame. Any lag between them breaks the illusion.
+- **Utility**: reserve haptics for meaningful moments: success, warning, error, a commit, a snap to a detent, selection changes in pickers. Too much feedback trains users to ignore all of it.
 
-- Press feedback appears within roughly 100ms.
-- Important animations are interruptible.
-- Reduced Motion path is acceptable.
-- No layout animation jank in scroll-critical areas.
-- No infinite motion that distracts from the task.
-- Haptics are meaningful and not repeated rapidly.
+Use the platform's semantic haptic types (selection, impact, notification success/warning/error) rather than raw vibration patterns. Never fire haptics on passive scrolling, background updates, or every frame of a gesture. Haptics never replace visual feedback, and they respect the system setting that turns them off.
+
+## Reduced Motion and Related Settings
+
+Reduced motion means a gentler equivalent, not removing feedback:
+
+- **Reduce Motion**: replace slides, zooms, parallax, and springs with short cross-fades or instant changes. Remove overshoot and looping motion. Keep the color and opacity changes that help comprehension.
+- **Reduce Transparency**: make translucent surfaces opaque.
+- **Increase Contrast**: strengthen borders, separators, and text.
+- Avoid large moving backgrounds, slow full-screen oscillations, and abrupt flashes of brightness for everyone, not only users with these settings on.
+- Anything that moves for more than about 5 seconds alongside other content can be paused.
+
+## Motion Spec Format
+
+Specify motion so any implementation can reproduce it:
+
+`<element> · trigger · property changes · spring (damping / response) or duration + easing · interruptible? · reduced-motion alternative · haptic`
+
+Example: `Sheet · drag release past 50% or flick > ~800pt/s · y → closed, scrim 40% → 0 tied to progress · spring 0.85 / 0.3 seeded with release velocity · interruptible · Reduce Motion: 200ms fade · none`
+
+## Motion Checklist
+
+- Every animation has a named purpose and passes the frequency gate.
+- Press feedback appears immediately on touch-down.
+- Animations can be interrupted, and gestures hand off velocity.
+- Exits are subtler than entries, and motion grows from its source.
+- No pulsing indicators, no stagger on every list, no bounce on utility actions.
+- A Reduce Motion path exists for every animation, and Reduce Transparency has an opaque fallback.
+- Haptics are causal, in sync with the visuals, and rare.
